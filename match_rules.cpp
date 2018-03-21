@@ -44,7 +44,7 @@ size_t align_to_pagesize(const size_t size)
 void usage(const char *program_name)
 {
     std::cerr << "Usage: " << program_name
-    << " ruleset.json \"input log rule\""
+    << " ruleset.json log_entries.json"
     << std::endl;
 }
 
@@ -824,23 +824,22 @@ int main(int argc, char *argv[])
     // Technically not a ruleset, but the function does just JSON parsing.
     json inputs = ruleset::from_file(argv[2]);
 
-    printf("Working on %zu inputs.\n", inputs.size());
-    fflush(stdout);
-
     size_t *rule_indices = NULL;
 
     size_t n_unsuccessful = 0;
 
+    json result = json::array();
+
     bool *successes = sandbox_bulk_find_matching_rule(ruleset, inputs, &rule_indices);
+
     for (size_t i = 0; i < inputs.size(); ++i) {
-        if (!successes[i])
+        if (!successes[i]) {
             n_unsuccessful++;
-        else {
-            printf("%zu matches with %zu\n", i, rule_indices[i]);
-            fflush(stdout);
+            result.push_back({ i, "inconsistent" });
+        } else {
+            result.push_back({ i, rule_indices[i] });
         }
     }
 
-    printf("Unable to match %zu rules\n", n_unsuccessful);
-    fflush(stdout);
+    std::cout << result.dump(4) << std::endl;
 }
