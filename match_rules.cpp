@@ -114,7 +114,7 @@ namespace ruleset {
         }
 
         const size_t rule_file_size = file_size(rule_file);
-        char *buffer = new char[rule_file_size];
+        char *buffer = new char[rule_file_size+1];
         if (!buffer || 
             (rule_file_size != fread(buffer, 1, rule_file_size, rule_file))) {
 
@@ -124,6 +124,8 @@ namespace ruleset {
 
             return nullptr;
         }
+        // Make sure the last byte is NULL, otherwise parsing fails.
+        buffer[rule_file_size] = '\0';
 
         json ruleset = parse(buffer);
         delete[] buffer;
