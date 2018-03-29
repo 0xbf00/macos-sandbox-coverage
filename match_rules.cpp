@@ -474,6 +474,12 @@ int sandbox_check_custom(const json &input)
     if (argument != "") {
         if (filter_type == SANDBOX_FILTER_UNKNOWN) {
             // Try every filter type, return true if any one returned true.
+            // Note: This only works because the sandbox's default decision is deny!
+            // If the default decision were allow, this would basically always return true!
+            // Because, given the following excerpt of a profile:
+            // (allow default)
+            // (deny file* (subpath "/usr"))
+            // sandbox_check would return 0 for basically any invalid filter type
             for (int current_filter = SANDBOX_FILTER_PATH; 
                  current_filter != SANDBOX_FILTER_UNKNOWN; 
                  ++current_filter) {
