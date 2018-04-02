@@ -27,7 +27,7 @@
 #include "sb/operations/helpers.h"
 #include "sb/operations/types.h"
 
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
