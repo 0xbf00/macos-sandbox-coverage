@@ -1,0 +1,1 @@
+int sandbox_check_iokit_open(const char *name);

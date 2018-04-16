@@ -1,0 +1,1 @@
+int sandbox_check_signal(const char *argument);

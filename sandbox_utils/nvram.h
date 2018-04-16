@@ -1,0 +1,1 @@
+int sandbox_check_nvram_get(const char *variable_name);
