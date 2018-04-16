@@ -1,3 +1,6 @@
+#ifndef SANDBOX_UTILS_H
+#define SANDBOX_UTILS_H
+
 #include "apple_sandbox.h"
 
 /**
@@ -30,3 +33,5 @@ __attribute__ ((visibility ("default"))) int sandbox_install_profile(const char 
  * this function will basically always return success.
  */
 __attribute__ ((visibility ("default"))) int sandbox_check_all(pid_t pid, const char *op, const char *argument);
+
+#endif

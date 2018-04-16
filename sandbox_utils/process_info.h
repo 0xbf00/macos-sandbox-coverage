@@ -1,3 +1,6 @@
+#ifndef SANDBOX_UTILS_PROCESS_INFO_H
+#define SANDBOX_UTILS_PROCESS_INFO_H
+
 #include <unistd.h>
 
 /**
@@ -14,3 +17,5 @@ int sandbox_check_setcontrol();
 int sandbox_check_listpids();
 int sandbox_check_pidinfo(pid_t target);
 int sandbox_check_pidfdinfo(pid_t target);
+
+#endif

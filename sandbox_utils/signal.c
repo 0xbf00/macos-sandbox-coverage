@@ -5,7 +5,7 @@
 
 #include "apple_sandbox.h"
 
-static int program_may_fork()
+static int fork_allowed()
 {
     int resp = sandbox_check(getpid(), "process-fork", SANDBOX_CHECK_NO_REPORT | SANDBOX_FILTER_NONE);
     return (resp == 0);
@@ -32,9 +32,10 @@ int sandbox_check_signal(const char *argument /* unused */)
     attempting to kill our child. If this succeeds, we
     can be sure sandbox_check would also succeed.
     */
-    if (!program_may_fork())
+    // If we fork but are not allowed to, we are killed
+    if (!fork_allowed())
         return -1;
-    
+
     pid_t pid = fork();
 
     if (pid == 0) {
