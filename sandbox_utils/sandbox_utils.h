@@ -3,6 +3,10 @@
 
 #include "apple_sandbox.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Custom sandbox_check function that attempts to
  * return more sensible results than the default sandbox_check
@@ -18,7 +22,7 @@
  * compatability reasons with sandbox_check. Both the pid argument
  * and the type argument are frequently ignored (but not always!).
  */
-__attribute__ ((visibility ("default"))) int sandbox_check_custom(pid_t pid, char *operation, int type, char *argument);
+__attribute__ ((visibility ("default"))) int sandbox_check_perform(pid_t pid, char *operation, int type, char *argument);
 
 /**
  * Custom function that installs a given profile using
@@ -33,5 +37,9 @@ __attribute__ ((visibility ("default"))) int sandbox_install_profile(const char 
  * this function will basically always return success.
  */
 __attribute__ ((visibility ("default"))) int sandbox_check_all(pid_t pid, const char *op, const char *argument);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -167,7 +167,7 @@ static const size_t n_check_functions = sizeof(check_functions) / sizeof(*check_
  * compatability reasons with sandbox_check. Both the pid argument
  * and the type argument are frequently ignored (but not always!).
  */
-int sandbox_check_custom(pid_t pid, char *operation, int type, char *argument)
+int sandbox_check_perform(pid_t pid, char *operation, int type, char *argument)
 {
     for (size_t i = 0; 
          i < n_check_functions; 

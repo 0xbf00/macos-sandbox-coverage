@@ -1,6 +1,10 @@
 #ifndef SANDBOX_CHECK_APPLE_SANDBOX_H
 #define SANDBOX_CHECK_APPLE_SANDBOX_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <unistd.h>
 
@@ -15,6 +19,7 @@ enum sandbox_filter_type {
     SANDBOX_FILTER_KEXT_BUNDLE_ID,
     SANDBOX_FILTER_INFO_TYPE,
     SANDBOX_FILTER_NOTIFICATION,
+    SANDBOX_FILTER_UNKNOWN,
 };
 extern const enum sandbox_filter_type SANDBOX_CHECK_NO_REPORT;
 extern const enum sandbox_filter_type SANDBOX_CHECK_CANONICAL;
@@ -24,5 +29,9 @@ int sandbox_init_with_parameters(const char *profile, uint64_t flags, const char
 
 int sandbox_check(pid_t pid, const char *operation,
                   int type, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
