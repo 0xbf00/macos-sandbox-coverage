@@ -7,6 +7,7 @@
 #include "iokit.h"
 #include "signal.h"
 #include "process_info.h"
+#include "mach.h"
 
 #include <stdbool.h>
 #include <string.h>
@@ -147,6 +148,13 @@ static const check_function_t check_functions[] = {
         ARGUMENT_TYPE_STRING,
         {
             .str_func = sandbox_check_iokit_open
+        }
+    },
+    {
+        "mach-register",
+        ARGUMENT_TYPE_STRING,
+        {
+            .str_func = sandbox_check_mach_register
         }
     }
 };
