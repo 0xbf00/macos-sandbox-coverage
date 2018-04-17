@@ -444,9 +444,19 @@ int sandbox_initialize(const char *profile)
  */
 int sandbox_filter_type_for_op(const char *operation)
 {
-    if (!strncmp("file", operation, strlen("file"))) {
+    if (!strncmp("file", operation, strlen("file")))
         return SANDBOX_FILTER_PATH;
-    }
+
+    // It is possible to register both local and global names.
+    // However, we don't know which one was registered, because the log
+    // files do not contain that information. Since the default application
+    // profile always allows registering local names, we check only for
+    // global names, to reduce the number of false matches.
+    // Obviously, this increases the number of inconsistent matches (
+    // everything that was previously matched to the local version and
+    // that is not allowed to be global is now matched inconsistently.)
+    if (!strncmp(operation, "mach-register", strlen("mach-register")))
+        return SANDBOX_FILTER_GLOBAL_NAME;
 
     return SANDBOX_FILTER_UNKNOWN;
 }
