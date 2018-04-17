@@ -89,12 +89,10 @@ int sandbox_filter_type_for_op(const char *operation)
  * choice.
  * Returns values from the sandbox_check API.
  */
-int sandbox_check_custom(const json &input)
+int sandbox_recheck_custom(const json &input)
 {
     std::string operation = input["operation"];
-    int filter_type = sandbox_filter_type_for_op(operation.c_str());
-
-    std::string argument;
+    std::string argument = "";
 
     if (input.find("argument") != input.end()) {
         argument = input["argument"];
@@ -102,26 +100,10 @@ int sandbox_check_custom(const json &input)
 
     pid_t pid = getpid();
 
-    if (argument != "") {
-        if (filter_type == SANDBOX_FILTER_UNKNOWN) {
-            // Try every filter type, return true if any one returned true.
-            // Note: This only works because the sandbox's default decision is deny!
-            // If the default decision were allow, this would basically always return true!
-            // Because, given the following excerpt of a profile:
-            // (allow default)
-            // (deny file* (subpath "/usr"))
-            // sandbox_check would return 0 for basically any invalid filter type
-            return sandbox_check_all(pid, operation.c_str(), argument.c_str());
-        }
-
-        return sandbox_check(getpid(), operation.c_str(), 
-            SANDBOX_CHECK_NO_REPORT | filter_type,
-            argument.c_str());
-
-    } else {
-        return sandbox_check(getpid(), operation.c_str(), 
-            SANDBOX_CHECK_NO_REPORT | SANDBOX_FILTER_NONE);
-    }
+    int status = sandbox_check_perform(pid, operation.c_str(), 0 /* ignored */, argument.c_str());
+    if (status != 0)
+        return 1;
+    return 0;
 }
 
 /**
@@ -131,7 +113,7 @@ int sandbox_check_custom(const json &input)
  * Returns values compatible with the sandbox_check functionality: 0 if allowed,
  * 1 if not allowed.
  */
-int sandbox_check_for_profile(const char *profile, const json &input)
+int sandbox_recheck_for_profile(const char *profile, const json &input)
 {
     if (profile) {
         pid_t child = fork();
@@ -140,7 +122,7 @@ int sandbox_check_for_profile(const char *profile, const json &input)
                 exit(1);
             }
 
-            exit(sandbox_check_custom(input));
+            exit(sandbox_recheck_custom(input));
         } else {
             int status;
             waitpid(child, &status, 0);
@@ -161,22 +143,22 @@ int sandbox_check_for_profile(const char *profile, const json &input)
     } else {
         // Do not apply a profile, just evaluate the rule.
         // Can be used for baseline calculation.
-        return sandbox_check_custom(input);
+        return sandbox_recheck_custom(input);
     }
 }
 
-int sandbox_check_for_profile(const json &profile, const json &input)
+int sandbox_recheck_for_profile(const json &profile, const json &input)
 {
-    return sandbox_check_for_profile(ruleset::dump_scheme(profile), input);
+    return sandbox_recheck_for_profile(ruleset::dump_scheme(profile), input);
 }
 
 /**
  * Verifies that the sandbox still returnes the same response for the input.
  * If the response is different, further matching makes little sense.
  */
-bool sandbox_check_baseline_consistency(const json &profile, const json &input)
+bool sandbox_recheck_baseline_consistency(const json &profile, const json &input)
 {
-    int baseline = sandbox_check_for_profile(profile, input);
+    int baseline = sandbox_recheck_for_profile(profile, input);
     if (baseline == -1)
         return false;
 
@@ -196,7 +178,7 @@ bool sandbox_check_baseline_consistency(const json &profile, const json &input)
  * and thousands of different processed, to use sandbox_check with different
  * profiles. To somewhat combat the immense slowdown, we use batch processing
  */
-bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int *results)
+bool sandbox_recheck_bulk_for_profile(const char *profile, const json &inputs, int *results)
 {
     assert(results);
     assert(inputs != nullptr);
@@ -214,6 +196,8 @@ bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int
 
     assert(temp);
 
+    // Contents are set to 2 to distinguish between entries that
+    // were set by the code and those that were not.
     memset(temp, 2, map_size);
 
     pid_t child = fork();
@@ -226,7 +210,7 @@ bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int
 
         for (size_t i = 0; i < inputs.size(); ++i) {
             const json &input = inputs[i];
-            int decision = sandbox_check_custom(input);
+            int decision = sandbox_recheck_custom(input);
 
             assert(decision == 0 || decision == 1);
 
@@ -261,15 +245,15 @@ bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int
     }
 }
 
-bool sandbox_check_bulk_for_profile(const json &profile, const json &inputs, int *results)
+bool sandbox_recheck_bulk_for_profile(const json &profile, const json &inputs, int *results)
 {
-    return sandbox_check_bulk_for_profile(ruleset::dump_scheme(profile), inputs, results);
+    return sandbox_recheck_bulk_for_profile(ruleset::dump_scheme(profile), inputs, results);
 }
 
-bool *sandbox_check_bulk_baseline_consistency(const json &profile, const json &inputs)
+bool *sandbox_recheck_bulk_baseline_consistency(const json &profile, const json &inputs)
 {
     int *decisions = new int[inputs.size()];
-    bool success = sandbox_check_bulk_for_profile(profile, inputs, decisions);
+    bool success = sandbox_recheck_bulk_for_profile(profile, inputs, decisions);
     if (!success)
         return NULL;
 
@@ -291,66 +275,6 @@ bool *sandbox_check_bulk_baseline_consistency(const json &profile, const json &i
     return result;
 }
 
-/**
- * Finds the matchig rule for a given input, which results in the decision by the sandbox.
- */
-bool sandbox_find_matching_rule(const json &profile, const json &input, size_t *out)
-{
-    int baseline = sandbox_check_for_profile(profile, input);
-    if (baseline == -1)
-        return false;
-
-    if (!sandbox_check_baseline_consistency(profile, input)) {
-        return false;
-    }
-
-    // Make sure the baseline is still the same, even when using the reduced rules set
-    // This is mainly reassuring and should never fail.
-    const json relevant_rulebase = ruleset::relevant_rules_only(profile, input);
-    const int relevant_baseline = sandbox_check_for_profile(relevant_rulebase, input);
-    if (relevant_baseline == -1)
-        return false;
-
-    assert(baseline == relevant_baseline);
-
-    json relevant = ruleset::set_default(relevant_rulebase, 
-        // When the baseline is allow, make the default action deny so that
-        // we are able to tell apart explicit allow decisions from implicit ones
-        // (and the other way around for a deny decision)
-        (baseline == 0) ? "deny" : "allow");
-
-    int res = sandbox_check_for_profile(relevant, input);
-    if (res == -1)
-        return false;
-
-    // If something has changed, only the default rule could be responsible.
-    if (res != baseline) {
-        *out = ruleset::index_for_rule(profile, ruleset::get_default(profile));
-        return true;
-    }
-
-    // Iteratively remove a rule, until the result either changes (or no rules are there anymore)
-    while (true) {
-        json removed;
-        relevant = ruleset::remove_last_rule(relevant, removed);
-
-        int last_result = sandbox_check_for_profile(relevant, input);
-        if (last_result == -1)
-            return false;
-
-        if (last_result != baseline) {
-            *out = ruleset::index_for_rule(profile, removed);
-            return true;
-        }
-
-        if (relevant.size() == 0) {
-            break;
-        }
-    }
-
-    return false;
-}
-
 #define RULE_UNMATCHED (~0)
 
 /**
@@ -360,10 +284,10 @@ bool sandbox_find_matching_rule(const json &profile, const json &input, size_t *
  */
 bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, size_t **matches_out)
 {
-    bool *consistent = sandbox_check_bulk_baseline_consistency(profile, inputs);
+    bool *consistent = sandbox_recheck_bulk_baseline_consistency(profile, inputs);
 
     int *baselines = new int[inputs.size()];
-    if (!sandbox_check_bulk_for_profile(profile, inputs, baselines))
+    if (!sandbox_recheck_bulk_for_profile(profile, inputs, baselines))
         return NULL;
 
     size_t *matching_rules = new size_t[inputs.size()];
@@ -377,16 +301,17 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
     while (true) {
         json removed;
         current_profile = ruleset::remove_last_rule(current_profile, removed);
+        const size_t rule_index = ruleset::index_for_rule(profile, removed);
 
+        // Reset last_results variable to contain all 2s, a value which is not
+        // a valid returns value from sandbox_check (and therefore can be identified as such)
         memset(last_results, 0x2, sizeof(*last_results) * inputs.size());
 
-        if (!sandbox_check_bulk_for_profile(current_profile, inputs, 
+        if (!sandbox_recheck_bulk_for_profile(current_profile, inputs, 
                                        last_results))
             return NULL;
 
         for (size_t i = 0; i < inputs.size(); ++i) {
-            const size_t rule_index = ruleset::index_for_rule(profile, removed);
-
             // Make sure an actual decision is put into last_results.
             assert((matching_rules[i] != RULE_UNMATCHED) || (last_results[i] != 0x2));
 
@@ -408,18 +333,18 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
     // the remaining ruleset falls back to the default action for the default operation,
     // which is also deny.
     // Handle these cases here!
-    for (size_t i = 0; i < inputs.size(); ++i) {
-        if (!consistent[i])
-            continue;
+    const json default_action = ruleset::get_default(profile);
+    if (default_action["action"] == "deny") {
+        for (size_t i = 0; i < inputs.size(); ++i) {
+            if (!consistent[i])
+                continue;
 
-        if (matching_rules[i] == RULE_UNMATCHED) {
-            json default_action = ruleset::get_default(profile);
-            const json &input = inputs[i];
+            if (matching_rules[i] == RULE_UNMATCHED) {
+                const json &input = inputs[i];
 
-            if (default_action["action"] == "deny" && 
-                input["action"] == "deny") {
-
-                matching_rules[i] = ruleset::index_for_rule(profile, default_action);
+                if (input["action"] == "deny") {
+                    matching_rules[i] = ruleset::index_for_rule(profile, default_action);
+                }
             }
         }
     }
@@ -435,6 +360,19 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
     return consistent;
 }
 
+int should_rematch(const json &match_entry, const json &log_entry)
+{
+    // Inconsistent matches should be rematched
+    if (!match_entry[1].is_number())
+        return true;
+
+    // mach-register rules were matched too leniently
+    if (log_entry["operation"] == "mach-register")
+        return true;
+
+    return false;
+}
+
 int main(int argc, char *argv[])
 {
     const char *program_name = argv[0];
@@ -445,14 +383,31 @@ int main(int argc, char *argv[])
     }
 
     json ruleset = ruleset::from_file(argv[1]);
-    if (ruleset == nullptr) {
+    // Technically not a ruleset, but the function does just JSON parsing.
+    json inputs = ruleset::from_file(argv[2]);
+    json match_results = ruleset::from_file(argv[3]);
+
+    if (ruleset == nullptr || inputs == nullptr || match_results == nullptr) {
         usage(program_name);
         return EXIT_FAILURE;
     }
 
-    // Technically not a ruleset, but the function does just JSON parsing.
-    json inputs = ruleset::from_file(argv[2]);
-    json match_results = ruleset::from_file(argv[3]);
+    // Carve out only the inputs we want to rematch
+    json inputs_to_check = json::array();
+    for (std::size_t i = 0; i < inputs.size(); ++i) {
+        const json &match_result = match_results[i];
+        const json &log_entry = inputs[i];
+
+        // Ignore consistent results
+        if (!should_rematch(match_result, log_entry))
+            continue;
+
+        inputs_to_check.push_back(inputs[i]);
+    }
+
+    std::cerr << "Have " 
+              << inputs_to_check.size() << "/" << inputs.size() 
+              << " results to recheck." << std::endl;
 
     size_t *rule_indices = NULL;
 
@@ -460,16 +415,46 @@ int main(int argc, char *argv[])
 
     json result = json::array();
 
-    bool *successes = sandbox_bulk_find_matching_rule(ruleset, inputs, &rule_indices);
+    bool *successes = sandbox_bulk_find_matching_rule(ruleset, inputs_to_check, &rule_indices);
 
-    for (size_t i = 0; i < inputs.size(); ++i) {
+    for (size_t i = 0; i < inputs_to_check.size(); ++i) {
+        // Find corresponding index in real inputs. Highly inefficient, but
+        // this part of the program does not dominate runtime, so it does not
+        // really matter.
+        // Searching for the nth inconsistent rule in inputs
+        size_t corresponding_index = 777777;
+        int nth_rule = i;
+
+        for (std::size_t j = 0; j < inputs.size(); ++j) {
+            const json &match_result = match_results[j];
+            const json &log_entry = inputs[j];
+
+            if (should_rematch(match_result, log_entry)) {
+                if (nth_rule == 0) {
+                    corresponding_index = j;
+                    break;
+                }
+                nth_rule--;
+            }
+        }
+
         if (!successes[i]) {
             n_unsuccessful++;
-            result.push_back({ i, "inconsistent" });
+//            std::cerr << inputs[corresponding_index].dump() << " returned inconsistent result" << std::endl;
+            result.push_back({ corresponding_index, "inconsistent" });
         } else {
-            result.push_back({ i, rule_indices[i] });
+            std::cerr << inputs[corresponding_index].dump() 
+                      << " successfully matched with rule "
+                      << ruleset[rule_indices[i]].dump()
+                      << std::endl;
+
+            result.push_back({ corresponding_index, rule_indices[i] });
         }
     }
+
+    std::cerr << "Failed to rematch " 
+              << n_unsuccessful << "/" << inputs_to_check.size() 
+              << std::endl;
 
     std::cout << result.dump(4) << std::endl;
 }
