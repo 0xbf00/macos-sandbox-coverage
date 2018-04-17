@@ -30,6 +30,13 @@ int sandbox_init_with_parameters(const char *profile, uint64_t flags, const char
 int sandbox_check(pid_t pid, const char *operation,
                   int type, ...);
 
+extern const char *APP_SANDBOX_READ_WRITE;
+extern const char *APP_SANDBOX_READ;
+
+extern char *sandbox_extension_issue_file(const char *ext, const char *path, int reserved, int flags);
+extern int sandbox_extension_consume(const char *token);
+extern int sandbox_extension_release(const char *token);
+
 #ifdef __cplusplus
 }
 #endif

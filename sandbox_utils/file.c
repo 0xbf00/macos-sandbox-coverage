@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  * Extracts the file target from the argument provided.
@@ -59,19 +60,23 @@ static char *file_issue_extension_parse_class(const char *argument)
 
 int sandbox_check_file_issue_extension(const char *argument)
 {
-    // As a first approximation, we simply call the default sandbox check function with
-    // extracted target. This will possible sometimes fail, but we don't care right now.
-    // The overwhelming majority of cases are allowed, and these cases will be correctly
-    // handled here.
     char *target = file_issue_extension_parse_target(argument);
     char *class = file_issue_extension_parse_class(argument);
 
-    int success = sandbox_check(getpid(),
-        "file-issue-extension", 
-        SANDBOX_CHECK_NO_REPORT | SANDBOX_FILTER_PATH,
-        target);
-    
+    const char *sandbox_class = NULL;
+    if (strcmp(class, "com.apple.app-sandbox.read-write") == 0) {
+        sandbox_class = APP_SANDBOX_READ_WRITE;
+    } else if (strcmp(class, "com.apple.app-sandbox.read") == 0) {
+        sandbox_class = APP_SANDBOX_READ;
+    } else {
+        return -1;
+    }
+
+    char *token = sandbox_extension_issue_file(sandbox_class, target, 0, 0);
+    int success = token == NULL;
+
     free(target);
+    free(class);
 
     return success;
 }

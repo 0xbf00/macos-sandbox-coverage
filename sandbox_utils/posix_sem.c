@@ -1,4 +1,5 @@
 #include "posix_sem.h"
+#include "misc.h"
 
 #include <stdio.h>
 #include <semaphore.h>
@@ -24,7 +25,7 @@ int sandbox_check_sem_create(const char *name)
 
     sem_t *semaphore = sem_open(name, O_CREAT, 0777, 1);
     if (semaphore == SEM_FAILED) {
-        perror("Cannot create semaphore");
+        PRINT_ERROR("Cannot create semaphore");
         if (errno == EPERM)
             return 1;
         else
@@ -45,7 +46,7 @@ int sandbox_check_sem_post(const char *name)
 {
     sem_t *semaphore = sem_open(name, 0);
     if (semaphore == SEM_FAILED) {
-        perror("Cannot open semaphore");
+        PRINT_ERROR("Cannot open semaphore");
         return -1;
     }
 
@@ -57,7 +58,7 @@ int sandbox_check_sem_wait(const char *name)
 {
     sem_t *semaphore = sem_open(name, 0);
     if (semaphore == SEM_FAILED) {
-        perror("Cannot open semaphore");
+        PRINT_ERROR("Cannot open semaphore");
         return -1;
     }
 

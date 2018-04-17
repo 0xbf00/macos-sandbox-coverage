@@ -22,13 +22,20 @@ extern "C" {
  * compatability reasons with sandbox_check. Both the pid argument
  * and the type argument are frequently ignored (but not always!).
  */
-__attribute__ ((visibility ("default"))) int sandbox_check_perform(pid_t pid, char *operation, int type, char *argument);
+__attribute__ ((visibility ("default"))) int sandbox_check_perform(
+    pid_t pid, 
+    const char *operation, 
+    int type, 
+    const char *argument
+);
 
 /**
  * Custom function that installs a given profile using
  * default flags and parameters. Returns 0 on success.
  */
-__attribute__ ((visibility ("default"))) int sandbox_install_profile(const char *profile);
+__attribute__ ((visibility ("default"))) int sandbox_install_profile(
+    const char *profile
+);
 
 /**
  * Custom function that tries all filter types for the given operation,
@@ -36,7 +43,11 @@ __attribute__ ((visibility ("default"))) int sandbox_install_profile(const char 
  * Note that this approach only works on default-deny profiles, otherwise
  * this function will basically always return success.
  */
-__attribute__ ((visibility ("default"))) int sandbox_check_all(pid_t pid, const char *op, const char *argument);
+__attribute__ ((visibility ("default"))) int sandbox_check_all(
+    pid_t pid,
+    const char *op,
+    const char *argument
+);
 
 #ifdef __cplusplus
 }

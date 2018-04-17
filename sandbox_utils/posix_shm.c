@@ -6,6 +6,8 @@
 #include <errno.h>
 #include <assert.h>
 
+#include "misc.h"
+
 /**
  * Checks whether the sandbox allows to create a
  * posix shared memory variable with the specified name.
@@ -31,7 +33,7 @@ int sandbox_check_shm_write_create(const char *name)
 
     int fd = shm_open(name, O_RDWR | O_CREAT, 0777);
     if (fd == -1) {
-        perror("Cannot create writable shared memory");
+        PRINT_ERROR("Cannot create writable shared memory");
         if (errno == EPERM)
             return 1;
         else
@@ -46,7 +48,7 @@ int sandbox_check_shm_write_data(const char *name)
 {
     int fd = shm_open(name, O_RDWR);
     if (fd == -1) {
-        perror("Cannot lookup named shared memory region");
+        PRINT_ERROR("Cannot lookup named shared memory region");
         if (errno == EPERM)
             return 1;
         else
@@ -61,7 +63,7 @@ int sandbox_check_shm_write_unlink(const char *name)
 {
     int failed = shm_unlink(name);
     if (failed) {
-        perror("Cannot unlink shared memory");
+        PRINT_ERROR("Cannot unlink shared memory");
         if (errno == EPERM)
             return 1;
         else
@@ -76,7 +78,7 @@ int sandbox_check_shm_read_data(const char *name)
     int fd = shm_open(name, O_RDONLY);
 
     if (fd == -1) {
-        perror("Cannot open shared memory");
+        PRINT_ERROR("Cannot open shared memory");
         if (errno == EPERM)
             return 1;
         else
@@ -100,13 +102,13 @@ int sandbox_check_shm_read_metadata(const char *name)
 
     if (fd == -1) {
         // Cannot open shared memory. Does the variable even exist?
-        perror("Cannot open shared memory");
+        PRINT_ERROR("Cannot open shared memory");
         return -1;
     }
 
     int success = fstat(fd, &metadata);
     if (success != 0) {
-        perror("stat failed");
+        PRINT_ERROR("stat failed");
         return 1;
     }
 
