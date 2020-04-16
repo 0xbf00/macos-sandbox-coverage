@@ -95,8 +95,3 @@ def process_logs(logs: list, pid: int) -> list:
     converted_entries = map(convert_log_entry, relevant_entries)
 
     return [x for x in converted_entries if x is not None]
-
-    # This is how to dump the resulting output
-    #
-    # with open(output_file, "w", encoding="utf8") as outfile:
-    #     json.dump(output, outfile, indent=4, ensure_ascii=False)
