@@ -13,19 +13,23 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <cstdlib>
 #include <cstdint>
 #include <string>
 #include <set>
 #include <algorithm>
+#include <cassert>
 
 #include <ctime>
 #include <unistd.h>
 #include <sys/mman.h>
 
-#include "sb/operations/definition.h"
-#include "sb/operations/helpers.h"
-#include "sb/operations/types.h"
+extern "C" {
+    #include "simbple/src/platform_data/platforms.h"
+    #include "simbple/src/sb/operations/data.h"
+    #include "simbple/src/sb/operations/types.h"
+}
 
 #include <nlohmann/json.hpp>
 
@@ -79,7 +83,7 @@ namespace sbpl {
             op_info = operation_info_for_idx(op_info->fallback_op);
 
             const size_t idx = operation_idx_for_operation_info(op_info);
-            std::string op_name(operation_names[idx]);
+            std::string op_name = operation_name_for_idx(idx);
 
             auto res = result.insert(op_name);
             
@@ -298,8 +302,10 @@ namespace ruleset {
     }
 
     /**
-     * Sets a new default action.
-     * Results in a rule of the form (action default)
+     * Injects a new sandbox rule of the form
+     *      (`action` default)
+     * into the supplied rulebase, replacing any existing default rule or
+     * creating a new one at the start of the ruleset.
      */
     json set_default(json rulebase, std::string action)
     {
@@ -338,11 +344,18 @@ namespace ruleset {
     }
 
     /**
-     * Removes the last rule and returns it to the caller.
+     * Removes the last sandbox rule from the `rulebase`.
+     *
+     * Assigns the removed rule to the out-parameter `removed` and returns a
+     * modified ruleset to the caller. This modified ruleset is missing the
+     * removed rule.
      */
-    json remove_last_rule(const json &rulebase, json &removed)
+    json remove_last_rule(const json &rulebase, size_t *last_rule_idx, json *last_rule)
     {
-        removed = rulebase.back();
+        assert(rulebase.size() > 0);
+
+        *last_rule_idx = rulebase.size() - 1;
+        *last_rule = rulebase.back();
 
         json result = json::array();
         std::copy(rulebase.begin(), rulebase.end() - 1, std::back_inserter(result));
@@ -359,11 +372,10 @@ namespace ruleset {
     }
 
     /**
-     * Searches for the rule `rule` in the rulebase
-     * and returns the corresponding index.
+     * Searches for the rule `rule` in the rulebase and returns the corresponding
+     * index.
      *
-     * It is an error to call this function with a rule
-     * that cannot be found in rulebase!
+     * It is an error to call this function with a rule that does not exist!
      */
     size_t index_for_rule(const json &rulebase, const json rule)
     {
@@ -721,14 +733,16 @@ bool sandbox_find_matching_rule(const json &profile, const json &input, size_t *
     // Iteratively remove a rule, until the result either changes (or no rules are there anymore)
     while (true) {
         json removed;
-        relevant = ruleset::remove_last_rule(relevant, removed);
+        size_t idx;
+
+        relevant = ruleset::remove_last_rule(relevant, &idx, &removed);
 
         int last_result = sandbox_check_for_profile(relevant, input);
         if (last_result == -1)
             return false;
 
         if (last_result != baseline) {
-            *out = ruleset::index_for_rule(profile, removed);
+            *out = idx;
             return true;
         }
 
@@ -765,7 +779,9 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
     // Iteratively remove a rule, until the result either changes (or no rules are there anymore)
     while (true) {
         json removed;
-        current_profile = ruleset::remove_last_rule(current_profile, removed);
+        size_t rule_index;
+
+        current_profile = ruleset::remove_last_rule(current_profile, &rule_index, &removed);
 
         memset(last_results, 0x2, sizeof(*last_results) * inputs.size());
 
@@ -774,8 +790,6 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
             return NULL;
 
         for (size_t i = 0; i < inputs.size(); ++i) {
-            const size_t rule_index = ruleset::index_for_rule(profile, removed);
-
             // Make sure an actual decision is put into last_results.
             assert((matching_rules[i] != RULE_UNMATCHED) || (last_results[i] != 0x2));
 
@@ -847,6 +861,10 @@ int main(int argc, char *argv[])
     size_t n_unsuccessful = 0;
 
     json result = json::array();
+
+    // Initialize platform data
+    op_data_provider provider = operations_for_platform(platform_get_default());
+    operations_install(provider);
 
     bool *successes = sandbox_bulk_find_matching_rule(ruleset, inputs, &rule_indices);
 

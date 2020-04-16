@@ -1,20 +1,39 @@
-CXX=clang++
-CXXFLAGS=-std=c++11 -O3 -I..
+FRAMEWORKS = Foundation
 
-SBPL_OBJ = definition.o helpers.o
+CXXFLAGS=-std=c++11 -O3 -Isimbple/src
+CFLAGS=-O3 -Isimbple/src
+LDFLAGS =-framework ${FRAMEWORKS}
 
-matcher: ${SBPL_OBJ} match_rules.cpp
-	${CXX} -o matcher ${CXXFLAGS} match_rules.cpp ${SBPL_OBJ}
+TARGET = matcher
 
-definition.o: ../sb/operations/definition.c ../sb/operations/definition.h
-	${CXX} -o definition.o ${CXXFLAGS} -c ../sb/operations/definition.c
+# Parts of simbple needed for the matcher.
+# Ideally this should be simplified by extracting the appropriate
+# sandbox data from libsandbox.1.dylib at runtime.
+C_OBJECTS = \
+	simbple/src/platform_data/platforms.o \
+	simbple/src/sb/operations/data.o \
+	simbple/src/platform_data/sierra/operations.o \
+	simbple/src/platform_data/sierra/filters.o \
+	simbple/src/platform_data/high_sierra/operations.o \
+	simbple/src/platform_data/high_sierra/filters.o \
+	simbple/src/platform_data/mojave/operations.o \
+	simbple/src/platform_data/mojave/filters.o \
+	simbple/src/platform_data/catalina/operations.o \
+	simbple/src/platform_data/catalina/filters.o
+OBJC_OBJECTS = simbple/src/misc/os_support.o
+OBJECTS = $(C_OBJECTS) $(OBJC_OBJECTS)
 
-helpers.o: ../sb/operations/helpers.c ../sb/operations/helpers.h
-	${CXX} -o helpers.o ${CXXFLAGS} -c ../sb/operations/helpers.c
+all: ${TARGET}
 
+$(C_OBJECTS): %.o: %.c
+$(OBJC_OBJECTS): %.o: %.m
 
-all: matcher
+${TARGET}: match_rules.cpp ${OBJECTS}
+	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} match_rules.cpp ${OBJECTS}
+
+$(OBJECTS):
+	$(CC) $< $(CFLAGS) -c -o $@
 
 clean:
-	rm -f matcher ${SBPL_OBJ}
+	rm -f ${TARGET} ${OBJECTS}
 	@echo "Removed build files."
