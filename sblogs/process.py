@@ -90,8 +90,12 @@ def is_relevant_log_entry(log_entry: dict, pid: int) -> bool:
     return True
 
 
-def process_logs(logs: list, pid: int) -> list:
+def process_logs(state: dict) -> (bool, dict):
+    pid = state['pid']
+    logs = state['logs']['raw']
+
     relevant_entries = filter(lambda entry: is_relevant_log_entry(entry, pid), logs)
     converted_entries = map(convert_log_entry, relevant_entries)
 
-    return [x for x in converted_entries if x is not None]
+    state['logs']['processed'] = [x for x in converted_entries if x is not None]
+    return True, state

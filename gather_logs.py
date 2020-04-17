@@ -36,16 +36,27 @@ def main():
                         help='Number of seconds to wait before killing the program. Leave unspecified to not kill the program at all.')
     args = parser.parse_args()
 
-    res = gather_logs(args.app, args.outdir, timeout=args.timeout)
-    if res is None:
+    state = {
+        'arguments': {
+            'app': args.app,
+            'outdir': args.outdir,
+            'timeout': args.timeout
+        }
+    }
+
+    success, state = gather_logs(state)
+    if not success:
+        # TODO: Proper error-handling
         return
 
-    pid, unprocessed_logs = res
-    processed_logs = process_logs(unprocessed_logs, pid)
+    success, state = process_logs(state)
+    if not success:
+        # TODO: Proper error-handling
+        return
 
     output_file = os.path.join(args.outdir, "sandbox_logs_processed.json")
     with open(output_file, "w", encoding="utf8") as outfile:
-        json.dump(processed_logs, outfile, indent=4, ensure_ascii=False)
+        json.dump(state['logs']['processed'], outfile, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":
