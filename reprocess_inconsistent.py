@@ -1,12 +1,14 @@
 """Script to re-process inconsistent and wrongly matched outputs"""
-import process_logs
-
 import argparse
 import os
 import subprocess
 import multiprocessing
-from misc.logger import create_logger
-from misc.filesystem import project_path
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
+
+from maap.misc.logger import create_logger
+from maap.misc.filesystem import project_path
 
 logger = create_logger("reprocess")
 

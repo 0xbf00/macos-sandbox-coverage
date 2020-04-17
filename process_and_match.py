@@ -1,12 +1,20 @@
-"""Script to post-process all outputs and match the result with our matcher"""
-import process_logs
+"""
+Script to post-process all outputs and match the result with our matcher
+
+TODO: Extract functionality in this script. Parts have already been moved into sblogs/process.py
+"""
+from sblogs.process import process_logs
 
 import argparse
 import os
 import subprocess
 import multiprocessing
-from misc.logger import create_logger
-from misc.filesystem import project_path
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
+
+from maap.misc.logger import create_logger
+from maap.misc.filesystem import project_path
 
 logger = create_logger("process_and_match")
 
@@ -55,7 +63,9 @@ def process_entry(entry_dir):
 
     # Process logs first
     try:
-        process_logs.process_log_dir(entry_dir)
+        pass
+        # TODO: Make this work with new scripts
+        # process_logs.process_log_dir(entry_dir)
     except:
         logger.error("Failed converting logs for {}".format(entry_dir))
         return

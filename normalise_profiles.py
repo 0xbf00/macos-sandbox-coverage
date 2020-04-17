@@ -1,13 +1,17 @@
 import json
-from misc.plist import parse_resilient
-from misc.logger import create_logger
-from extern.tools import call_sbpl
 import argparse
 import tempfile
 import os
 import plistlib
 import operator
 import multiprocessing
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
+
+from maap.misc.plist import parse_resilient
+from maap.misc.logger import create_logger
+from maap.extern.tools import call_sbpl
 
 logger = create_logger('normalise_profiles')
 
