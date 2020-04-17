@@ -15,11 +15,14 @@ from maap.misc.filesystem import project_path
 logger = create_logger("sblogs.match")
 
 
-def perform_matching(processed_logs: list, sandbox_profile: dict) -> dict:
+def perform_matching(state: dict) -> (bool, dict)):
     """
     Invokes the matcher, assuming the directory contains both the profile
     to match against, and processed log entries.
     """
+    processed_logs = state['logs']['processed']
+    sandbox_profile = state['sandbox_profiles']['patched']
+
     matcher_path = "matcher"
     assert os.path.exists(matcher_path)
 
@@ -38,8 +41,9 @@ def perform_matching(processed_logs: list, sandbox_profile: dict) -> dict:
         with open(outfile, "w+b") as outf:
             returncode = subprocess.call([matcher_path, ruleset_at, logs_at], stdout=outf)
             if returncode != 0:
-                return
+                return False, {}
             else:
                 outf.flush()
                 outf.seek(0, 0)
-                return json.load(outf)
+                state['match_results'] = json.load(outf)
+                return True, state
