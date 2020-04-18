@@ -35,6 +35,12 @@ extern "C" {
 
 using json = nlohmann::json;
 
+enum sandbox_match_status {
+    SANDBOX_INCONSISTENT = 0,
+    SANDBOX_CONSISTENT = 1,
+    SANDBOX_UNKNOWN = 2
+};
+
 /**
  * Round up the `size` to the next largest size that
  * is aligned to `alignment`
@@ -667,25 +673,25 @@ bool sandbox_check_bulk_for_profile(const json &profile, const json &inputs, int
     return sandbox_check_bulk_for_profile(ruleset::dump_scheme(profile), inputs, results);
 }
 
-bool *sandbox_check_bulk_baseline_consistency(const json &profile, const json &inputs)
+enum sandbox_match_status *sandbox_check_bulk_baseline_consistency(const json &profile, const json &inputs)
 {
     int *decisions = new int[inputs.size()];
     bool success = sandbox_check_bulk_for_profile(profile, inputs, decisions);
     if (!success)
         return NULL;
 
-    bool *result = new bool[inputs.size()];
+    enum sandbox_match_status *result = new enum sandbox_match_status[inputs.size()];
 
     assert(result && decisions);
 
     for (size_t i = 0; i < inputs.size(); ++i) {
         const json &input = inputs[i];
         if (input["action"] == "allow" && decisions[i] == 0)
-            result[i] = true;
+            result[i] = SANDBOX_CONSISTENT;
         else if (input["action"] == "deny" && decisions[i] == 1)
-            result[i] = true;
+            result[i] = SANDBOX_CONSISTENT;
         else
-            result[i] = false;
+            result[i] = SANDBOX_INCONSISTENT;
     }
 
     delete[] decisions;
@@ -761,9 +767,9 @@ bool sandbox_find_matching_rule(const json &profile, const json &input, size_t *
  * Returns a list of bool values, each bool signifies whether the corresponding rule could be found (or not).
  * The actual rule numbers are put into the out parameter `matches_out`
  */
-bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, size_t **matches_out)
+enum sandbox_match_status *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, size_t **matches_out)
 {
-    bool *consistent = sandbox_check_bulk_baseline_consistency(profile, inputs);
+    enum sandbox_match_status *consistent = sandbox_check_bulk_baseline_consistency(profile, inputs);
 
     int *baselines = new int[inputs.size()];
     if (!sandbox_check_bulk_for_profile(profile, inputs, baselines))
@@ -793,7 +799,7 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
             // Make sure an actual decision is put into last_results.
             assert((matching_rules[i] != RULE_UNMATCHED) || (last_results[i] != 0x2));
 
-            if (!consistent[i])
+            if (!(consistent[i] == SANDBOX_CONSISTENT))
                 continue;
 
             if ((matching_rules[i] == RULE_UNMATCHED) && (last_results[i] != baselines[i])) {
@@ -812,7 +818,7 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
     // which is also deny.
     // Handle these cases here!
     for (size_t i = 0; i < inputs.size(); ++i) {
-        if (!consistent[i])
+        if (!(consistent[i] == SANDBOX_CONSISTENT))
             continue;
 
         if (matching_rules[i] == RULE_UNMATCHED) {
@@ -822,16 +828,30 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
             if (default_action["action"] == "deny" && 
                 input["action"] == "deny") {
 
+                // TODO: To be strictly correct, you'd have to compile a default allow profile
+                // and verify that the action is not denied anymore!
                 matching_rules[i] = ruleset::index_for_rule(profile, default_action);
+            } else {
+                // See note below: There are decisions where the App Sandbox profile says deny but
+                // the sandbox says allow. These cannot be matched using this matcher.
+                consistent[i] = SANDBOX_UNKNOWN;
             }
         }
     }
 
-    // Sanity check.
-    for (size_t i = 0; i < inputs.size(); ++i) {
-        assert (((consistent[i] == true) && (matching_rules[i] != RULE_UNMATCHED))
-            || ((consistent[i] == false) && (matching_rules[i] == RULE_UNMATCHED)));
-    }
+    /**
+     * Note: At this point you expect the following assertion to hold:
+     *
+     * for (size_t i = 0; i < inputs.size(); ++i) {
+     *      assert (((consistent[i] == SANDBOX_CONSISTENT) && (matching_rules[i] != RULE_UNMATCHED))
+     *           || ((consistent[i] == SANDBOX_INCONSISTENT) && (matching_rules[i] == RULE_UNMATCHED)));
+     * }
+     *
+     * This assumption however turns out to be wrong. Probably due to the built-in platform sandboxing
+     * profile, there are allow decisions that are not part of the App Sandboxing profile. Example:
+     *
+     * (allow file-map-executable "/usr/lib/libobjc-trampolines.dylib")
+     */
 
     *matches_out = matching_rules;
 
@@ -866,14 +886,20 @@ int main(int argc, char *argv[])
     op_data_provider provider = operations_for_platform(platform_get_default());
     operations_install(provider);
 
-    bool *successes = sandbox_bulk_find_matching_rule(ruleset, inputs, &rule_indices);
+    enum sandbox_match_status *statuses = sandbox_bulk_find_matching_rule(ruleset, inputs, &rule_indices);
 
     for (size_t i = 0; i < inputs.size(); ++i) {
-        if (!successes[i]) {
-            n_unsuccessful++;
-            result.push_back({ i, "inconsistent" });
-        } else {
-            result.push_back({ i, rule_indices[i] });
+        switch (statuses[i]) {
+            case SANDBOX_INCONSISTENT:
+                n_unsuccessful++;
+                result.push_back({ i, "inconsistent" });
+                break;
+            case SANDBOX_CONSISTENT:
+                result.push_back({ i, rule_indices[i] });
+                break;
+            case SANDBOX_UNKNOWN:
+                result.push_back({ i, "unknown" });
+                break;
         }
     }
 
