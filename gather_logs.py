@@ -23,6 +23,7 @@ from maap.bundle.bundle import Bundle
 
 from sblogs.gather import gather_logs
 from sblogs.process import process_logs
+from sblogs.match import perform_matching
 
 logger = create_logger('rule_matching.gather_logs')
 
@@ -54,9 +55,18 @@ def main():
         # TODO: Proper error-handling
         return
 
+    success, state = perform_matching(state)
+    if not success:
+        # TODO: Proper error-handling
+        return
+
     output_file = os.path.join(args.outdir, "sandbox_logs_processed.json")
     with open(output_file, "w", encoding="utf8") as outfile:
         json.dump(state['logs']['processed'], outfile, indent=4, ensure_ascii=False)
+
+    output_file = os.path.join(args.outdir, "match_results.json")
+    with open(output_file, "w", encoding="utf8") as outfile:
+        json.dump(state['match_results'], outfile, indent=4, ensure_ascii=False)
 
 
 if __name__ == "__main__":

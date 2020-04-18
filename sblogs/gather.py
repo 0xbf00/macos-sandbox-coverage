@@ -54,7 +54,7 @@ def process_sb_profiles(state: dict) -> (bool, dict):
         outfile.write(patched_profile)
 
     state['sandbox_profiles'] = {
-        'original': original_profile,
+        'original': json.loads(original_profile),
         'patched': patched_profile,
     }
 

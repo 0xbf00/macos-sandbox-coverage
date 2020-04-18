@@ -15,16 +15,17 @@ from maap.misc.filesystem import project_path
 logger = create_logger("sblogs.match")
 
 
-def perform_matching(state: dict) -> (bool, dict)):
+def perform_matching(state: dict) -> (bool, dict):
     """
     Invokes the matcher, assuming the directory contains both the profile
     to match against, and processed log entries.
     """
     processed_logs = state['logs']['processed']
-    sandbox_profile = state['sandbox_profiles']['patched']
+    sandbox_profile = state['sandbox_profiles']['original']
 
-    matcher_path = "matcher"
+    matcher_path = "./matcher"
     assert os.path.exists(matcher_path)
+    matcher_path = os.path.abspath(matcher_path)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         # Dump parameters to disk for matching component
@@ -36,14 +37,8 @@ def perform_matching(state: dict) -> (bool, dict)):
         with open(logs_at, "w") as f:
             json.dump(processed_logs, f, ensure_ascii=False, indent=4)
         
-        outfile = os.path.join(tmpdir, "match_results.json")
-        
-        with open(outfile, "w+b") as outf:
-            returncode = subprocess.call([matcher_path, ruleset_at, logs_at], stdout=outf)
-            if returncode != 0:
-                return False, {}
-            else:
-                outf.flush()
-                outf.seek(0, 0)
-                state['match_results'] = json.load(outf)
-                return True, state
+        try:
+            state['match_results'] = json.loads(subprocess.check_output([matcher_path, ruleset_at, logs_at]))
+            return True, state
+        except subprocess.CalledProcessError:
+            return False, {}
