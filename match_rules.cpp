@@ -38,7 +38,7 @@ using json = nlohmann::json;
 enum sandbox_match_status {
     SANDBOX_INCONSISTENT = 0,
     SANDBOX_CONSISTENT = 1,
-    SANDBOX_UNKNOWN = 2
+    SANDBOX_EXTERNAL = 2
 };
 
 /**
@@ -832,9 +832,8 @@ enum sandbox_match_status *sandbox_bulk_find_matching_rule(const json &profile, 
                 // and verify that the action is not denied anymore!
                 matching_rules[i] = ruleset::index_for_rule(profile, default_action);
             } else {
-                // See note below: There are decisions where the App Sandbox profile says deny but
-                // the sandbox says allow. These cannot be matched using this matcher.
-                consistent[i] = SANDBOX_UNKNOWN;
+                // See note below
+                consistent[i] = SANDBOX_EXTERNAL;
             }
         }
     }
@@ -847,10 +846,15 @@ enum sandbox_match_status *sandbox_bulk_find_matching_rule(const json &profile, 
      *           || ((consistent[i] == SANDBOX_INCONSISTENT) && (matching_rules[i] == RULE_UNMATCHED)));
      * }
      *
-     * This assumption however turns out to be wrong. Probably due to the built-in platform sandboxing
-     * profile, there are allow decisions that are not part of the App Sandboxing profile. Example:
+     * This assumption however turns out to be wrong. An example is
      *
      * (allow file-map-executable "/usr/lib/libobjc-trampolines.dylib")
+     *
+     * This case arises because the file-map-executable operation is default allow! A default deny profile
+     * with no explicit rule for file-map-executable will therefore default to allowing all file-map-executable
+     * actions. Since there is no rule that is responsible for this, we assign SANDBOX_EXTERNAL as the sandbox
+     * consistency status. There might be other instances of this phenomenon, also due to the built-in platform
+     * sandbox profile.
      */
 
     *matches_out = matching_rules;
@@ -897,8 +901,8 @@ int main(int argc, char *argv[])
             case SANDBOX_CONSISTENT:
                 result.push_back({ i, rule_indices[i] });
                 break;
-            case SANDBOX_UNKNOWN:
-                result.push_back({ i, "unknown" });
+            case SANDBOX_EXTERNAL:
+                result.push_back({ i, "external" });
                 break;
         }
     }
