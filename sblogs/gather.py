@@ -21,13 +21,15 @@ logger = create_logger('sblogs.gather')
 
 def process_sb_profiles(state: dict) -> (bool, dict):
     """
-    This function does three things:
-        1. It stores the original sandbox profile of the app in JSON format,
+    This function does four things:
+        1. It stores the original container metadata of the app, allowing
+           it to be used later to create the normalised version of this container.
+        2. It stores the original sandbox profile of the app in JSON format,
            allowing it to be used later on for matching purposes
            The output filename is `outdir/original_profile.json`
-        2. It modifies the sandbox profile to enable comprehensive logging
+        3. It modifies the sandbox profile to enable comprehensive logging
            output. I refer to this as "patching" a profile.
-        3. It injects the compiled modified sandbox profile into the application's
+        4. It injects the compiled modified sandbox profile into the application's
            Container.plist metadata file, forcing the system to use our modified
            sandbox profile for subsequent app launches
     
@@ -77,6 +79,10 @@ def process_sb_profiles(state: dict) -> (bool, dict):
     # PlistBuddy is a useful program to do this.
     container_metadata = os.path.join(APP_CONTAINER, "Container.plist")
     assert os.path.isfile(container_metadata)
+
+    # Store original metadata in state structure
+    with open(container_metadata, "rb") as infile:
+        state['container_metadata'] = infile.read()
 
     subprocess.call([
         "/usr/libexec/PlistBuddy",

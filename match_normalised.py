@@ -180,6 +180,9 @@ def process_entry(bundle_path, general_profile):
     the generic profile we use for visualisation at the end."""
     print('Processing {}'.format(bundle_path))
 
+    # TODO: Investigate whether we need to verify the normalisation process.
+    # This functionality was previously part of normalise_profiles.py
+
     MATCH_RESULTS_AT = os.path.join(bundle_path, "match_results.json")
     SANDBOX_PROFILE_AT = os.path.join(bundle_path, "patched_profile.json")
     NORMALISED_PROFILE_AT = os.path.join(bundle_path, "normalised_profile.json")
