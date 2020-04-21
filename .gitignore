@@ -1,0 +1,9 @@
+# Object files
+*.o
+*.dylib
+
+# Python files
+__pycache__
+
+# ccls files
+.ccls-cache
