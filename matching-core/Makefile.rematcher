@@ -1,5 +1,6 @@
 CXX=clang++
-CXXFLAGS=-std=c++11 -O3 -Isimbple/src -I.
+CFLAGS=-Isimbple/src -I.
+CXXFLAGS=-std=c++11 -O3 ${CFLAGS}
 LDFLAGS=-framework Foundation
 
 TARGET = rematcher
@@ -42,6 +43,6 @@ sbpl_helpers.o: ${OBJECTS} sbpl_helpers.cpp
 all: rematcher
 
 clean:
-	rm -f rematcher ${MATCH_OBJ}
+	rm -f rematcher ${MATCH_OBJ} ${OBJECTS}
 	rm -f definition.o helpers.o
 	@echo "Removed build files."
