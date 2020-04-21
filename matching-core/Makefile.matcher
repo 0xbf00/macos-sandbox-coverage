@@ -1,6 +1,6 @@
 FRAMEWORKS = Foundation
 
-CXXFLAGS=-std=c++11 -O3 -Isimbple/src
+CXXFLAGS=-std=c++11 -O3 -Isimbple/src -I.
 CFLAGS=-O3 -Isimbple/src
 LDFLAGS =-framework ${FRAMEWORKS}
 
@@ -21,6 +21,9 @@ C_OBJECTS = \
 	simbple/src/platform_data/catalina/operations.o \
 	simbple/src/platform_data/catalina/filters.o
 OBJC_OBJECTS = simbple/src/misc/os_support.o
+CPP_OBJECTS = \
+	ruleset_helpers.o \
+	sbpl_helpers.o
 OBJECTS = $(C_OBJECTS) $(OBJC_OBJECTS)
 
 all: ${TARGET}
@@ -28,12 +31,15 @@ all: ${TARGET}
 $(C_OBJECTS): %.o: %.c
 $(OBJC_OBJECTS): %.o: %.m
 
-${TARGET}: match_rules.cpp ${OBJECTS}
-	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} match_rules.cpp ${OBJECTS}
+$(CPP_OBJECTS): %.o: %.cpp
+	$(CXX) $< $(CXXFLAGS) -c -o $@
+
+${TARGET}: match_rules.cpp ${OBJECTS} ${CPP_OBJECTS}
+	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} match_rules.cpp ${OBJECTS} ${CPP_OBJECTS}
 
 $(OBJECTS):
 	$(CC) $< $(CFLAGS) -c -o $@
 
 clean:
-	rm -f ${TARGET} ${OBJECTS}
+	rm -f ${TARGET} ${OBJECTS} ${CPP_OBJECTS}
 	@echo "Removed build files."
