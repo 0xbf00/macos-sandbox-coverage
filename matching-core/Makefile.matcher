@@ -28,14 +28,17 @@ OBJECTS = $(C_OBJECTS) $(OBJC_OBJECTS)
 
 all: ${TARGET}
 
+sandbox_utils/sandbox_utils.dylib:
+	make -C sandbox_utils lib
+
 $(C_OBJECTS): %.o: %.c
 $(OBJC_OBJECTS): %.o: %.m
 
 $(CPP_OBJECTS): %.o: %.cpp
 	$(CXX) $< $(CXXFLAGS) -c -o $@
 
-${TARGET}: match_rules.cpp ${OBJECTS} ${CPP_OBJECTS}
-	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} match_rules.cpp ${OBJECTS} ${CPP_OBJECTS}
+${TARGET}: match_rules.cpp ${OBJECTS} ${CPP_OBJECTS} sandbox_utils/sandbox_utils.dylib
+	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} $^
 
 $(OBJECTS):
 	$(CC) $< $(CFLAGS) -c -o $@

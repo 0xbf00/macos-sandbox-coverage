@@ -27,13 +27,14 @@
 
 #include "sbpl_helpers.h"
 #include "ruleset_helpers.h"
+#include "sandbox_utils/sandbox_utils.h"
 
 #include "sandbox_utils/apple_sandbox.h"
 
 extern "C" {
-    #include "simbple/src/platform_data/platforms.h"
-    #include "simbple/src/sb/operations/data.h"
-    #include "simbple/src/sb/operations/types.h"
+    #include <simbple/src/platform_data/platforms.h>
+    #include <simbple/src/sb/operations/data.h>
+    #include <simbple/src/sb/operations/types.h>
 }
 
 #include <nlohmann/json.hpp>
@@ -61,19 +62,6 @@ void usage(const char *program_name)
     std::cerr << "Usage: " << program_name
     << " ruleset.json log_entries.json"
     << std::endl;
-}
-
-/**
- * Attempts to initialize the sandbox for the caller using the given profile.
- * Returns 0 on success.
- */
-int sandbox_initialize(const char *profile)
-{
-    char *sandbox_error = NULL;
-
-    int success = sandbox_init_with_parameters(profile, 0, NULL, &sandbox_error);
-    
-    return !(success == 0 && sandbox_error == NULL);
 }
 
 /**
@@ -202,7 +190,7 @@ bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int
     if (child == 0) 
     {
         // Inside child. We use the exit status to communicate with our parent
-        if (sandbox_initialize(profile) != 0) {
+        if (sandbox_install_profile(profile) != 0) {
             exit(1);
         }
 
