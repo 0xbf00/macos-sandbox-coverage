@@ -20,6 +20,7 @@
 #include <set>
 #include <algorithm>
 #include <cassert>
+#include <vector>
 
 #include <ctime>
 #include <unistd.h>
@@ -159,6 +160,30 @@ int sandbox_check_custom(const json &input)
         return sandbox_check(getpid(), operation.c_str(), 
             SANDBOX_CHECK_NO_REPORT | SANDBOX_FILTER_NONE);
     }
+}
+
+/**
+ * Check whether the input rule is allowed in the current sandbox.
+ * Similar functionality to the sandbox_check functionality, however
+ * this function encapsulates much of the functionality of parameter
+ * choice.
+ * Returns values from the sandbox_check API.
+ */
+int sandbox_recheck_custom(const json &input)
+{
+    std::string operation = input["operation"];
+    std::string argument = "";
+
+    if (input.find("argument") != input.end()) {
+        argument = input["argument"];
+    }
+
+    pid_t pid = getpid();
+
+    int status = sandbox_check_perform(pid, operation.c_str(), 0 /* ignored */, argument.c_str());
+    if (status != 0)
+        return 1;
+    return 0;
 }
 
 typedef int (*sandbox_check_func)(const json &input);
@@ -365,6 +390,19 @@ enum sandbox_match_status *sandbox_bulk_find_matching_rule(sandbox_check_func ch
     return consistent;
 }
 
+int should_rematch(const json &match_entry, const json &log_entry)
+{
+    // Inconsistent matches should be rematched
+    if (match_entry[1] == "inconsistent")
+        return true;
+
+    // mach-register rules were matched too leniently
+    if (log_entry["operation"] == "mach-register")
+        return true;
+
+    return false;
+}
+
 int main(int argc, char *argv[])
 {
     const char *program_name = argv[0];
@@ -383,8 +421,6 @@ int main(int argc, char *argv[])
     // Technically not a ruleset, but the function does just JSON parsing.
     json inputs = ruleset::from_file(argv[2]);
 
-    size_t *rule_indices = NULL;
-
     size_t n_unsuccessful = 0;
 
     json result = json::array();
@@ -393,8 +429,10 @@ int main(int argc, char *argv[])
     op_data_provider provider = operations_for_platform(platform_get_default());
     operations_install(provider);
 
+    size_t *rule_indices = NULL;
     enum sandbox_match_status *statuses = sandbox_bulk_find_matching_rule(sandbox_check_custom, ruleset, inputs, &rule_indices);
 
+    // First pass: record results
     for (size_t i = 0; i < inputs.size(); ++i) {
         switch (statuses[i]) {
             case SANDBOX_INCONSISTENT:
@@ -407,6 +445,41 @@ int main(int argc, char *argv[])
             case SANDBOX_EXTERNAL:
                 result.push_back({ i, "external" });
                 break;
+        }
+    }
+
+    // Second pass: Recheck inconsistent results
+    json inputs_to_recheck = json::array();
+    std::vector<size_t> input_indices{};
+
+    for (std::size_t i = 0; i < inputs.size(); ++i) {
+        const json &match_result = result[i];
+        const json &log_entry = inputs[i];
+
+        if (!should_rematch(match_result, log_entry))
+            continue;
+
+        inputs_to_recheck.push_back(inputs[i]);
+        input_indices.push_back(i);
+    }
+
+    rule_indices = NULL;
+    statuses = sandbox_bulk_find_matching_rule(sandbox_recheck_custom, ruleset, inputs_to_recheck, &rule_indices);
+
+    for (size_t i = 0; i < inputs_to_recheck.size(); ++i) {
+        const size_t idx = input_indices[i];
+
+        switch (statuses[i]) {
+        case SANDBOX_INCONSISTENT:
+            n_unsuccessful++;
+            result[idx] = { idx, "inconsistent" };
+            break;
+        case SANDBOX_CONSISTENT:
+            result[idx] = { idx, rule_indices[i] };
+            break;
+        case SANDBOX_EXTERNAL:
+            result[idx] = { idx, "external" };
+            break;
         }
     }
 
