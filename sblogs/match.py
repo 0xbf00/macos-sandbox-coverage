@@ -29,7 +29,7 @@ def perform_matching(state: dict) -> (bool, dict):
 
     with tempfile.TemporaryDirectory() as tmpdir:
         # Dump parameters to disk for matching component
-        ruleset_at = os.path.join(tmpdir, "patched_profile.json")
+        ruleset_at = os.path.join(tmpdir, "sandbox_profile.json")
         logs_at = os.path.join(tmpdir, "sandbox_logs_processed.json")
         
         with open(ruleset_at, "w") as f:
