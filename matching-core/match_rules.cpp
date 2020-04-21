@@ -161,12 +161,14 @@ int sandbox_check_custom(const json &input)
     }
 }
 
+typedef int (*sandbox_check_func)(const json &input);
+
 /**
  * The main problem with this approach is the need to generate thousands
  * and thousands of different processed, to use sandbox_check with different
  * profiles. To somewhat combat the immense slowdown, we use batch processing
  */
-bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int *results)
+bool sandbox_check_bulk_for_profile(sandbox_check_func check_func, const char *profile, const json &inputs, int *results)
 {
     assert(results);
     assert(inputs != nullptr);
@@ -196,7 +198,7 @@ bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int
 
         for (size_t i = 0; i < inputs.size(); ++i) {
             const json &input = inputs[i];
-            int decision = sandbox_check_custom(input);
+            int decision = check_func(input);
 
             assert(decision == 0 || decision == 1);
 
@@ -231,15 +233,15 @@ bool sandbox_check_bulk_for_profile(const char *profile, const json &inputs, int
     }
 }
 
-bool sandbox_check_bulk_for_profile(const json &profile, const json &inputs, int *results)
+bool sandbox_check_bulk_for_profile(sandbox_check_func check_func, const json &profile, const json &inputs, int *results)
 {
-    return sandbox_check_bulk_for_profile(ruleset::dump_scheme(profile), inputs, results);
+    return sandbox_check_bulk_for_profile(check_func, ruleset::dump_scheme(profile), inputs, results);
 }
 
-enum sandbox_match_status *sandbox_check_bulk_baseline_consistency(const json &profile, const json &inputs)
+enum sandbox_match_status *sandbox_check_bulk_baseline_consistency(sandbox_check_func check_func, const json &profile, const json &inputs)
 {
     int *decisions = new int[inputs.size()];
-    bool success = sandbox_check_bulk_for_profile(profile, inputs, decisions);
+    bool success = sandbox_check_bulk_for_profile(check_func, profile, inputs, decisions);
     if (!success)
         return NULL;
 
@@ -269,12 +271,12 @@ enum sandbox_match_status *sandbox_check_bulk_baseline_consistency(const json &p
  * Returns a list of bool values, each bool signifies whether the corresponding rule could be found (or not).
  * The actual rule numbers are put into the out parameter `matches_out`
  */
-enum sandbox_match_status *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, size_t **matches_out)
+enum sandbox_match_status *sandbox_bulk_find_matching_rule(sandbox_check_func check_func, const json &profile, const json &inputs, size_t **matches_out)
 {
-    enum sandbox_match_status *consistent = sandbox_check_bulk_baseline_consistency(profile, inputs);
+    enum sandbox_match_status *consistent = sandbox_check_bulk_baseline_consistency(check_func, profile, inputs);
 
     int *baselines = new int[inputs.size()];
-    if (!sandbox_check_bulk_for_profile(profile, inputs, baselines))
+    if (!sandbox_check_bulk_for_profile(check_func, profile, inputs, baselines))
         return NULL;
 
     size_t *matching_rules = new size_t[inputs.size()];
@@ -293,8 +295,7 @@ enum sandbox_match_status *sandbox_bulk_find_matching_rule(const json &profile, 
 
         memset(last_results, 0x2, sizeof(*last_results) * inputs.size());
 
-        if (!sandbox_check_bulk_for_profile(current_profile, inputs, 
-                                       last_results))
+        if (!sandbox_check_bulk_for_profile(check_func, current_profile, inputs, last_results))
             return NULL;
 
         for (size_t i = 0; i < inputs.size(); ++i) {
@@ -392,7 +393,7 @@ int main(int argc, char *argv[])
     op_data_provider provider = operations_for_platform(platform_get_default());
     operations_install(provider);
 
-    enum sandbox_match_status *statuses = sandbox_bulk_find_matching_rule(ruleset, inputs, &rule_indices);
+    enum sandbox_match_status *statuses = sandbox_bulk_find_matching_rule(sandbox_check_custom, ruleset, inputs, &rule_indices);
 
     for (size_t i = 0; i < inputs.size(); ++i) {
         switch (statuses[i]) {
