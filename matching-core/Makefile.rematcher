@@ -1,5 +1,5 @@
 CXX=clang++
-CXXFLAGS=-std=c++11 -O3 -I../simbple/src -I..
+CXXFLAGS=-std=c++11 -O3 -Isimbple/src -I.
 LDFLAGS=-framework Foundation
 
 TARGET = rematcher
@@ -11,17 +11,17 @@ MATCH_OBJ = ruleset_helpers.o sbpl_helpers.o
 # Ideally this should be simplified by extracting the appropriate
 # sandbox data from libsandbox.1.dylib at runtime.
 C_OBJECTS = \
-	../simbple/src/platform_data/platforms.o \
-	../simbple/src/sb/operations/data.o \
-	../simbple/src/platform_data/sierra/operations.o \
-	../simbple/src/platform_data/sierra/filters.o \
-	../simbple/src/platform_data/high_sierra/operations.o \
-	../simbple/src/platform_data/high_sierra/filters.o \
-	../simbple/src/platform_data/mojave/operations.o \
-	../simbple/src/platform_data/mojave/filters.o \
-	../simbple/src/platform_data/catalina/operations.o \
-	../simbple/src/platform_data/catalina/filters.o
-OBJC_OBJECTS = ../simbple/src/misc/os_support.o
+	simbple/src/platform_data/platforms.o \
+	simbple/src/sb/operations/data.o \
+	simbple/src/platform_data/sierra/operations.o \
+	simbple/src/platform_data/sierra/filters.o \
+	simbple/src/platform_data/high_sierra/operations.o \
+	simbple/src/platform_data/high_sierra/filters.o \
+	simbple/src/platform_data/mojave/operations.o \
+	simbple/src/platform_data/mojave/filters.o \
+	simbple/src/platform_data/catalina/operations.o \
+	simbple/src/platform_data/catalina/filters.o
+OBJC_OBJECTS = simbple/src/misc/os_support.o
 OBJECTS = $(C_OBJECTS) $(OBJC_OBJECTS)
 
 $(C_OBJECTS): %.o: %.c
@@ -33,8 +33,8 @@ $(OBJECTS):
 rematcher: ${MATCH_OBJ} ${OBJECTS} rematch_inconsistent.cpp
 	${CXX} ${LDFLAGS} -o rematcher ${CXXFLAGS} sandbox_utils/sandbox_utils.dylib rematch_inconsistent.cpp ${MATCH_OBJ} ${OBJECTS}
 
-ruleset_helpers.o: sbpl_helpers.o ruleset_helpers.cpp
-	${CXX} -o $@ ${CXXFLAGS} -c sbpl_helpers.o ruleset_helpers.cpp
+ruleset_helpers.o: ruleset_helpers.cpp
+	${CXX} -o $@ ${CXXFLAGS} -c ruleset_helpers.cpp
 
 sbpl_helpers.o: ${OBJECTS} sbpl_helpers.cpp
 	${CXX} -o $@ ${CXXFLAGS} -c sbpl_helpers.cpp

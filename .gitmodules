@@ -2,5 +2,5 @@
 	path = maap
 	url = https://github.com/0xbf00/maap
 [submodule "simbple"]
-	path = simbple
+	path = matching-core/simbple
 	url = https://github.com/0xbf00/simbple
