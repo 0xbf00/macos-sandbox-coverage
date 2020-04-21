@@ -26,6 +26,12 @@
 #include "ruleset_helpers.h"
 #include "sandbox_utils/sandbox_utils.h"
 
+extern "C" {
+    #include <simbple/src/platform_data/platforms.h>
+    #include <simbple/src/sb/operations/data.h>
+    #include <simbple/src/sb/operations/types.h>
+}
+
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -381,6 +387,10 @@ int main(int argc, char *argv[])
         usage(program_name);
         return EXIT_FAILURE;
     }
+
+    // Initialize platform data
+    op_data_provider provider = operations_for_platform(platform_get_default());
+    operations_install(provider);
 
     json ruleset = ruleset::from_file(argv[1]);
     // Technically not a ruleset, but the function does just JSON parsing.

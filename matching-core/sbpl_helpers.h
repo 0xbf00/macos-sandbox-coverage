@@ -6,9 +6,11 @@
 #include <cstdlib>
 #include <array>
 
-#include "sb/operations/definition.h"
-#include "sb/operations/helpers.h"
-#include "sb/operations/types.h"
+extern "C" {
+    #include <simbple/src/platform_data/platforms.h>
+    #include <simbple/src/sb/operations/data.h>
+    #include <simbple/src/sb/operations/types.h>
+}
 
 namespace sbpl {
     /**

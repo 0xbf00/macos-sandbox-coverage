@@ -2,6 +2,7 @@
 #define RULESET_HELPERS_H
 
 #include <string>
+#include <sstream>
 
 #include <nlohmann/json.hpp>
 
