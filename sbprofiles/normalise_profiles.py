@@ -71,7 +71,7 @@ def normalise_profile(state: dict) -> (bool, dict):
     :returns New file containing generalised profile
     """
     metadata = state['container_metadata']
-    original_profile = state['sandbox_profiles']['original']
+    original_profile = json.loads(state['sandbox_profiles']['original'])
  
     profile = profile_for_metadata(metadata, format='json')
     if profile is None:
@@ -90,7 +90,7 @@ def normalise_profile(state: dict) -> (bool, dict):
     assert isinstance(normalised_profile, list)
 
     if original_profile != recreated_profile:
-        logger.error("Failed to recreate profiles for bundle id {}".format(bundle_id))
+        logger.error("Failed to recreate profiles for bundle id {}".format(state['arguments']['app']))
         return False, {}
 
     state['sandbox_profiles']['normalised'] = normalised_profile

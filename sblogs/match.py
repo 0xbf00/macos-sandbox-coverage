@@ -21,7 +21,7 @@ def perform_matching(state: dict) -> (bool, dict):
     to match against, and processed log entries.
     """
     processed_logs = state['logs']['processed']
-    sandbox_profile = state['sandbox_profiles']['original']
+    sandbox_profile = json.loads(state['sandbox_profiles']['original'])
 
     matcher_path = "./matcher"
     assert os.path.exists(matcher_path)
