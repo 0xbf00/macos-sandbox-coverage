@@ -30,7 +30,7 @@ namespace ruleset {
     /**
      * Removes the last rule and returns it to the caller.
      */
-    json remove_last_rule(const json &rulebase, json &removed);
+    json remove_last_rule(const json &rulebase, size_t *last_rule_idx, json *last_rule);
 
     /**
      * Gets the nth rule of a profile

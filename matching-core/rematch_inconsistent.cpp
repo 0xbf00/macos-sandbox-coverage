@@ -238,8 +238,9 @@ bool *sandbox_bulk_find_matching_rule(const json &profile, const json &inputs, s
 
     // Iteratively remove a rule, until the result either changes (or no rules are there anymore)
     while (true) {
+        size_t idx;
         json removed;
-        current_profile = ruleset::remove_last_rule(current_profile, removed);
+        current_profile = ruleset::remove_last_rule(current_profile, &idx, &removed);
         const size_t rule_index = ruleset::index_for_rule(profile, removed);
 
         // Reset last_results variable to contain all 2s, a value which is not

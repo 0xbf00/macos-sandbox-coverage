@@ -209,8 +209,10 @@ namespace ruleset {
     }
 
     /**
-     * Sets a new default action.
-     * Results in a rule of the form (action default)
+     * Injects a new sandbox rule of the form
+     *      (`action` default)
+     * into the supplied rulebase, replacing any existing default rule or
+     * creating a new one at the start of the ruleset.
      */
     json set_default(json rulebase, std::string action)
     {
@@ -249,11 +251,18 @@ namespace ruleset {
     }
 
     /**
-     * Removes the last rule and returns it to the caller.
+     * Removes the last sandbox rule from the `rulebase`.
+     *
+     * Assigns the removed rule to the out-parameter `removed` and returns a
+     * modified ruleset to the caller. This modified ruleset is missing the
+     * removed rule.
      */
-    json remove_last_rule(const json &rulebase, json &removed)
+    json remove_last_rule(const json &rulebase, size_t *last_rule_idx, json *last_rule)
     {
-        removed = rulebase.back();
+        assert(rulebase.size() > 0);
+
+        *last_rule_idx = rulebase.size() - 1;
+        *last_rule = rulebase.back();
 
         json result = json::array();
         std::copy(rulebase.begin(), rulebase.end() - 1, std::back_inserter(result));
@@ -273,8 +282,7 @@ namespace ruleset {
      * Searches for the rule `rule` in the rulebase
      * and returns the corresponding index.
      *
-     * It is an error to call this function with a rule
-     * that cannot be found in rulebase!
+     * It is an error to call this function with a rule that does not exist!
      */
     size_t index_for_rule(const json &rulebase, const json rule)
     {
