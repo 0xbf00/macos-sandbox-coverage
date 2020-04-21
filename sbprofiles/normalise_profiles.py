@@ -59,39 +59,18 @@ def profile_for_metadata(metadata: dict, format='scheme', patch=False) -> bytes:
 
 def normalise_profile(state: dict) -> (bool, dict):
     """
-    This function looks up the original sandbox profile,
-    normalises its container metadata and re-generates a new sandbox profile,
-    which is then undergoing basic sanity checking and finally returned
-    to the user
-
-    :param match_results Base folder for match results. Is used to read existing results
-    and to verify new results.
-    :param containers Base folder for Container.plist metadata information.
-
-    :returns New file containing generalised profile
+    This function normalises the container metadata of the target app, then uses
+    this normalised metadata to generate a normalised sandbox profile using simbple.
     """
     metadata = state['container_metadata']
-    original_profile = json.loads(state['sandbox_profiles']['original'])
- 
-    profile = profile_for_metadata(metadata, format='json')
-    if profile is None:
-        logger.error("Failed to get profile for metadata for bundle id {}".format(bundle_id))
-        return False, {}
+    normalised_metadata = normalise_container_metadata(metadata)
 
-    norm_profile = profile_for_metadata(normalise_container_metadata(metadata), format='json')
+    norm_profile = profile_for_metadata(normalised_metadata, format='json')
     if norm_profile is None:
         logger.error("Failed to get normalised profile for metadata for bundle id {}".format(bundle_id))
         return False, {}
 
-    recreated_profile  = json.loads(profile)
     normalised_profile = json.loads(norm_profile)
-
-    assert isinstance(recreated_profile, list)
-    assert isinstance(normalised_profile, list)
-
-    if original_profile != recreated_profile:
-        logger.error("Failed to recreate profiles for bundle id {}".format(state['arguments']['app']))
-        return False, {}
 
     state['sandbox_profiles']['normalised'] = normalised_profile
     return True, state
