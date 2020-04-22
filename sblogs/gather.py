@@ -11,6 +11,7 @@ import datetime
 import sys
 import json
 import plistlib
+import tempfile
 
 from maap.misc.logger import create_logger
 from maap.misc.app_utils import init_sandbox, container_for_app, run_process
@@ -49,15 +50,12 @@ def compile_sb_profile(profile: str) -> bytes:
 def process_sb_profiles(state: dict) -> (bool, dict):
     """
     This function does three things:
-        1. It stores the original container metadata of the app, allowing
+        1. It extracts the original container metadata of the app, allowing
            it to be used later to create the normalised version of this container.
-        2. It stores the original sandbox profile of the app in JSON format,
+        2. It extracts the original sandbox profile of the app in JSON format,
            allowing it to be used later on for matching purposes
-           The output filename is `outdir/original_profile.json`
         3. It modifies the sandbox profile to enable comprehensive logging
            output. I refer to this as "patching" a profile.
-    
-    The function returns True on success and Fale otherwise
     """
     bundle = Bundle.make(state['arguments']['app'])
 
@@ -96,17 +94,11 @@ def collect_sb_traces(state: dict) -> (bool, dict):
     """
     This function enables comprehensive sandbox logging, runs the supplied app,
     either indefinitely (`timeout` = None) or for the specified number of `timeout`
-    seconds. It collects system log entries during this time and returns them to
-    the caller.
-
-    It creates a new folder named "process_infos" in `outdir`. In this directory,
-    it stores files "stdout", "stderr" and "pid", which contain the outputs of
-    the app and its pid. While the outputs are only relevant in select cases to
-    debug issues, the pid file is relevant for filtering log entries
+    seconds. It collects system log entries during this time and stores all of the
+    information collected in the `state` structure.
     """
     bundle = Bundle.make(state['arguments']['app'])
     APP_METADATA_FILE = os.path.join(container_for_app(bundle), "Container.plist")
-    outdir = state['arguments']['outdir']
     timeout = state['arguments']['timeout']
 
     # The easiest way to make sure our patched profile is actually used would be
@@ -124,15 +116,19 @@ def collect_sb_traces(state: dict) -> (bool, dict):
     # Start / stop times necessary to filter log entries
     start = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Run app, collect information in "process_infos" subfolder
-    INFOS_FOLDER = os.path.join(outdir, "process_infos")
-    os.mkdir(INFOS_FOLDER)
+    with tempfile.TemporaryDirectory() as tempdirname:
+        INFO_STDOUT = os.path.join(tempdirname, "stdout")
+        INFO_STDERR = os.path.join(tempdirname, "stderr")
 
-    INFO_STDOUT = os.path.join(INFOS_FOLDER, "stdout")
-    INFO_STDERR = os.path.join(INFOS_FOLDER, "stderr")
+        with open(INFO_STDOUT, "w") as stdout_f, open(INFO_STDERR, "w") as stderr_f:
+            state['process_infos'] = {
+                'pid': run_process(bundle.executable_path(), timeout, stdout_f, stderr_f)
+            }
 
-    with open(INFO_STDOUT, "w") as stdout_f, open(INFO_STDERR, "w") as stderr_f:
-        state['pid'] = run_process(bundle.executable_path(), timeout, stdout_f, stderr_f)
+        state['process_infos'].update({
+            'stdout': open(INFO_STDOUT).read(),
+            'stderr': open(INFO_STDERR).read()
+        })
 
     end = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -156,7 +152,6 @@ def collect_sb_traces(state: dict) -> (bool, dict):
 
 def gather_logs(state: dict) -> (bool, dict):
     app_path = state['arguments']['app']
-    outdir = state['arguments']['outdir']
 
     if not (app_path.endswith(".app") or app_path.endswith(".app/")) and Bundle.is_bundle(app_path):
         logger.error("Provided path {} is not a valid app. Skipping.".format(app_path))
@@ -172,13 +167,6 @@ def gather_logs(state: dict) -> (bool, dict):
     if not init_successful:
         logger.error("Failed to initialise sandbox for {}. Skipping.".format(app_path))
         return False, {}
-
-    # TODO: Extract this bit of functionality
-    if os.path.isdir(outdir):
-        logger.info("Skipping processing for {}, as output folder already exists.".format(app_path))
-        return False, {}
-
-    os.mkdir(outdir)
 
     success, state = process_sb_profiles(state)
     if not success:
