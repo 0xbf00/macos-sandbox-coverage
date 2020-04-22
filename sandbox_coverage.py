@@ -1,25 +1,18 @@
 """
-gather_logs
+sandbox_coverage
 
 (c) Jakob Rieck 2018
 
-Tool to collect sandbox logs for a given application. Sandbox logs contain
-all allow and deny decisions that sandboxd was nice enough to log to the system log.
+Tool to investigate sandbox profile coverage.
 """
 import argparse
 import os
-import subprocess
-import datetime
 import sys
 import json
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
 
 from maap.misc.logger import create_logger
-from maap.misc.app_utils import init_sandbox, container_for_app, run_process
-from maap.misc.filesystem import project_path
-from maap.extern.tools import call_sbpl, tool_named
-from maap.bundle.bundle import Bundle
 
 from sblogs.gather import gather_logs
 from sblogs.process import process_logs
@@ -27,7 +20,7 @@ from sblogs.match import perform_matching
 from sbprofiles.normalise import normalise_profile
 from sbprofiles.generalise import generalise_results
 
-logger = create_logger('rule_matching.gather_logs')
+logger = create_logger('sandbox_coverage')
 
 def main():
     parser = argparse.ArgumentParser(description='Collect sandbox logs for an application run')
