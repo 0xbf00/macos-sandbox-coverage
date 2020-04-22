@@ -24,6 +24,8 @@ from maap.bundle.bundle import Bundle
 from sblogs.gather import gather_logs
 from sblogs.process import process_logs
 from sblogs.match import perform_matching
+from sbprofiles.normalise import normalise_profile
+from sbprofiles.generalise import generalise_results
 
 logger = create_logger('rule_matching.gather_logs')
 
@@ -42,6 +44,9 @@ def main():
             'app': args.app,
             'outdir': args.outdir,
             'timeout': args.timeout
+        },
+        'sandbox_profiles': {
+            'general': json.load(open('data/generic_profile.json'))
         }
     }
 
@@ -56,6 +61,16 @@ def main():
         return
 
     success, state = perform_matching(state)
+    if not success:
+        # TODO: Proper error-handling
+        return
+
+    success, state = normalise_profile(state)
+    if not success:
+        # TODO: Proper error-handling
+        return
+
+    success, state = generalise_results(state)
     if not success:
         # TODO: Proper error-handling
         return

@@ -77,10 +77,13 @@ def process_sb_profiles(state: dict) -> (bool, dict):
     # We patch the existing profile to enable logging for every allow operation
     patched_profile = call_sbpl(APP_CONTAINER, result_format='scheme', patch=True)
 
-    state['sandbox_profiles'] = {
+    if 'sandbox_profiles' not in state:
+        state['sandbox_profiles'] = dict()
+
+    state['sandbox_profiles'].update({
         'original': original_profile,
         'patched': patched_profile,
-    }
+    })
 
     # Compile the profile using stefan esser's tool
     compiled_patched_profile = compile_sb_profile(patched_profile)

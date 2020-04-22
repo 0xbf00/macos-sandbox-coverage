@@ -4,11 +4,11 @@ import os
 import plistlib
 import operator
 
-from maap.misc.plist import parse_resilient
+from maap.misc.plist import parse_resilient_bytes
 from maap.misc.logger import create_logger
 from maap.extern.tools import call_sbpl
 
-logger = create_logger('normalise_profiles')
+logger = create_logger('sbprofiles.normalise')
 
 
 def normalise_container_metadata(metadata: dict) -> dict:
@@ -62,7 +62,7 @@ def normalise_profile(state: dict) -> (bool, dict):
     This function normalises the container metadata of the target app, then uses
     this normalised metadata to generate a normalised sandbox profile using simbple.
     """
-    metadata = state['container_metadata']
+    metadata = parse_resilient_bytes(state['container_metadata'])
     normalised_metadata = normalise_container_metadata(metadata)
 
     norm_profile = profile_for_metadata(normalised_metadata, format='json')

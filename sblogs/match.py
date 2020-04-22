@@ -23,7 +23,7 @@ def perform_matching(state: dict) -> (bool, dict):
     processed_logs = state['logs']['processed']
     sandbox_profile = json.loads(state['sandbox_profiles']['original'])
 
-    matcher_path = "./matcher"
+    matcher_path = "./matching-core/matcher"
     assert os.path.exists(matcher_path)
     matcher_path = os.path.abspath(matcher_path)
 
@@ -38,7 +38,10 @@ def perform_matching(state: dict) -> (bool, dict):
             json.dump(processed_logs, f, ensure_ascii=False, indent=4)
         
         try:
-            state['match_results'] = json.loads(subprocess.check_output([matcher_path, ruleset_at, logs_at]))
+            if 'match_results' not in state:
+                state['match_results'] = dict()
+
+            state['match_results']['original'] = json.loads(subprocess.check_output([matcher_path, ruleset_at, logs_at]))
             return True, state
         except subprocess.CalledProcessError:
             return False, {}
