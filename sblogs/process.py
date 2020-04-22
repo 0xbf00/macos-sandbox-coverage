@@ -91,7 +91,7 @@ def is_relevant_log_entry(log_entry: dict, pid: int) -> bool:
 
 
 def process_logs(state: dict) -> (bool, dict):
-    pid = state['pid']
+    pid = state['process_infos']['pid']
     logs = state['logs']['raw']
 
     relevant_entries = filter(lambda entry: is_relevant_log_entry(entry, pid), logs)
