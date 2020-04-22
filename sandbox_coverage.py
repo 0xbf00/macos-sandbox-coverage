@@ -27,10 +27,9 @@ def dump_state(state: dict, fp=sys.stdout):
     def serialise(input):
         """
         Serialise byte strings. First try decoding them as JSON, if that does not work out
-        decode them as text (UTF8). If that still does not work, encode them as base64.
+        encode the byte string as base64.
         This function traverses lists and dicts, modifying their items as required.
         """
-
         if isinstance(input, dict):
             serialised = [(serialise(k), serialise(v)) for (k, v) in input.items()]
             return dict(serialised)
@@ -44,13 +43,7 @@ def dump_state(state: dict, fp=sys.stdout):
             except (json.JSONDecodeError, UnicodeError):
                 pass
 
-            # Not valid JSON: Try decoding as UTF-8
-            try:
-                return serialise(input.decode())
-            except UnicodeError:
-                pass
-
-            # Not UTF-8: Fall back to base64
+            # Not valid JSON: Fall back to base64
             return serialise(base64.encodebytes(input).decode())
         else:
             return input
