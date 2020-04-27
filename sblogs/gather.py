@@ -67,8 +67,10 @@ def process_sb_profiles(state: dict) -> (bool, dict):
         state['container_metadata'] = infile.read()
 
     # Only continue iff simbple is able to correctly recompile the target sandbox profile
-    if compile_sb_profile(call_sbpl(APP_CONTAINER)) != read_sb_profile(APP_METADATA_FILE):
-        logger.error("Unable to recompile target app's sandbox profile.")
+    if call_sbpl(APP_CONTAINER, verify=True) is None:
+        logger.error(
+            f"Unable to verify simbple output for target app's sandbox profile: {APP_CONTAINER}"
+        )
         return False, {}
     original_profile = call_sbpl(APP_CONTAINER, result_format='json')
 
