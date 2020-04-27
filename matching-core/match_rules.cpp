@@ -218,6 +218,8 @@ bool sandbox_check_bulk_for_profile(sandbox_check_func check_func, const char *p
     {
         // Inside child. We use the exit status to communicate with our parent
         if (sandbox_install_profile(profile) != 0) {
+            std::cerr << "Failed to compile the following profile:" << std::endl;
+            std::cerr << profile << std::endl;
             exit(1);
         }
 
