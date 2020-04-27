@@ -152,13 +152,21 @@ int sandbox_check_custom(const json &input)
             return 1;
         }
 
-        return sandbox_check(getpid(), operation.c_str(), 
-            SANDBOX_CHECK_NO_REPORT | filter_type,
-            argument.c_str());
+
+        const int filter = SANDBOX_CHECK_NO_REPORT | filter_type;
+        const int rv = sandbox_check(getpid(), operation.c_str(), filter, argument.c_str());
+        if (!(rv == 0 || rv == 1)) {
+            std::cerr << "sandbox_check returned " << rv << " for process with pid " << getpid() << ": " << operation << " " << filter << " " << argument << std::endl;
+        }
+        return rv;
 
     } else {
-        return sandbox_check(getpid(), operation.c_str(), 
-            SANDBOX_CHECK_NO_REPORT | SANDBOX_FILTER_NONE);
+        const int filter = SANDBOX_CHECK_NO_REPORT | SANDBOX_FILTER_NONE;
+        const int rv = sandbox_check(getpid(), operation.c_str(), filter);
+        if (!(rv == 0 || rv == 1)) {
+            std::cerr << "sandbox_check returned " << rv << " for process with pid " << getpid() << ": " << operation << " " << filter << std::endl;
+        }
+        return rv;
     }
 }
 
