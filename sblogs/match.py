@@ -40,8 +40,13 @@ def perform_matching(state: dict) -> (bool, dict):
         try:
             if 'match_results' not in state:
                 state['match_results'] = dict()
-
-            state['match_results']['original'] = json.loads(subprocess.check_output([matcher_path, ruleset_at, logs_at]))
+            matcher = subprocess.run(
+                [matcher_path, ruleset_at, logs_at],
+                capture_output=True,
+                check=True,
+                text=True,
+            )
+            state['match_results']['original'] = json.loads(matcher.stdout)
             return True, state
         except subprocess.CalledProcessError:
             return False, {}
