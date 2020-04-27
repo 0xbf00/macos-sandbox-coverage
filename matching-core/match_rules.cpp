@@ -139,8 +139,8 @@ int sandbox_check_custom(const json &input)
             // (allow default)
             // (deny file* (subpath "/usr"))
             // sandbox_check would return 0 for basically any invalid filter type
-            for (int current_filter = SANDBOX_FILTER_PATH; 
-                 current_filter != SANDBOX_FILTER_UNKNOWN; 
+            for (int current_filter = SANDBOX_FILTER_PATH;
+                 current_filter != SANDBOX_FILTER_UNKNOWN;
                  ++current_filter) {
                 int res = sandbox_check(pid, operation.c_str(), SANDBOX_CHECK_NO_REPORT | current_filter, argument.c_str());
                 if (res == 0 /* allowed */) {
@@ -214,7 +214,7 @@ bool sandbox_check_bulk_for_profile(sandbox_check_func check_func, const char *p
     memset(temp, 2, map_size);
 
     pid_t child = fork();
-    if (child == 0) 
+    if (child == 0)
     {
         // Inside child. We use the exit status to communicate with our parent
         if (sandbox_install_profile(profile) != 0) {
@@ -233,8 +233,8 @@ bool sandbox_check_bulk_for_profile(sandbox_check_func check_func, const char *p
         }
 
         exit(0);
-    } 
-    else 
+    }
+    else
     {
         // Inside parent. Wait for child to exit.
         int status;
@@ -242,7 +242,7 @@ bool sandbox_check_bulk_for_profile(sandbox_check_func check_func, const char *p
 
         if (WIFSIGNALED(status)) {
             std::cerr << "Signal thrown by child. Investigate!" << std::endl;
-            std::cerr << "Corresponding profile: " << std::endl 
+            std::cerr << "Corresponding profile: " << std::endl
                       << profile << std::endl;
             return false;
         }
@@ -355,7 +355,7 @@ enum sandbox_match_status *sandbox_bulk_find_matching_rule(sandbox_check_func ch
             json default_action = ruleset::get_default(profile);
             const json &input = inputs[i];
 
-            if (default_action["action"] == "deny" && 
+            if (default_action["action"] == "deny" &&
                 input["action"] == "deny") {
 
                 // TODO: To be strictly correct, you'd have to compile a default allow profile

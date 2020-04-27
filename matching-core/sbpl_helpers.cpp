@@ -21,12 +21,12 @@ namespace sbpl {
         while (true) {
             op_info = operation_info_for_idx(op_info->fallback_op);
 
-            
+
             const size_t idx = operation_idx_for_operation_info(op_info);
             std::string op_name = operation_name_for_idx(idx);
 
             auto res = result.insert(op_name);
-            
+
             // Stop if we have already processed this operation name
             if (!std::get<1>(res)) {
                 break;

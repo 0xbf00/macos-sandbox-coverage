@@ -75,7 +75,7 @@ static const char *IOServiceNameForClass(const char *name)
     if (!name)
         return NULL;
 
-    CFStringRef class = CFStringCreateWithCStringNoCopy(NULL, 
+    CFStringRef class = CFStringCreateWithCStringNoCopy(NULL,
         name, kCFStringEncodingUTF8, kCFAllocatorNull);
     CFStringRef bundle_id = IOObjectCopyBundleIdentifierForClass(class);
 
@@ -138,7 +138,7 @@ int sandbox_check_iokit_open(const char *name)
     const char *service_name = io_service_for_user_class(name);
     if (!service_name)
         return -1;
-    
+
     serviceObject = IOServiceGetMatchingService(kIOMasterPortDefault,
                         IOServiceNameMatching(service_name));
 

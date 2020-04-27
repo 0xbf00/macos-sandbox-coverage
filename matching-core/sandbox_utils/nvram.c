@@ -30,7 +30,7 @@ int sandbox_check_nvram_get(const char *variable_name)
 
     kern_return_t result;
     CFMutableDictionaryRef dict;
-  
+
     // This call triggers all NVRAM variables to be queried and results
     // in a number of deny statements in the system log ordinarily.
     // However, we can then decide if our particular variable name was
@@ -39,7 +39,7 @@ int sandbox_check_nvram_get(const char *variable_name)
     if (result != KERN_SUCCESS)
         return 1;
 
-    CFStringRef variable = CFStringCreateWithCStringNoCopy(NULL, 
+    CFStringRef variable = CFStringCreateWithCStringNoCopy(NULL,
         variable_name, kCFStringEncodingUTF8, kCFAllocatorNull);
     assert(variable);
 

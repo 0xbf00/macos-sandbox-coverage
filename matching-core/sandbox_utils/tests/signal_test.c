@@ -11,7 +11,7 @@ const char *profile = \
 
 
 int main(int argc, char *argv[])
-{ 
+{
     assert(0 == sandbox_install_profile(profile));
 
     // Our signal checker only ever tries to kill its children.

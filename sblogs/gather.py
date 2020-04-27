@@ -41,7 +41,7 @@ def compile_sb_profile(profile: str) -> bytes:
     exit_code, result = compile_sb("/dev/stdin", "/dev/stdout", input=profile)
     if exit_code != 0:
         return
-    
+
     return result
 
 
@@ -88,7 +88,7 @@ def process_sb_profiles(state: dict) -> (bool, dict):
     if compiled_patched_profile is None:
         logger.error(f"Failed to compile patched profile: {APP_CONTAINER}")
         return False, {}
-    
+
     return True, state
 
 def collect_sb_traces(state: dict) -> (bool, dict):

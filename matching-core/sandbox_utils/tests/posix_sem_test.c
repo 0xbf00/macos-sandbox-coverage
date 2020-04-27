@@ -21,7 +21,7 @@ void cleanup_test()
 int main(int argc, char *argv[])
 {
     cleanup_test();
- 
+
     assert(0 == sandbox_install_profile(profile));
 
     // Check creation

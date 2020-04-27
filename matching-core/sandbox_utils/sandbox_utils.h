@@ -14,7 +14,7 @@ extern "C" {
  *
  * This function performs its work not by querying the kernel interface
  * as sandbox_check does, but instead actually attempts to perform the
- * actions. Beware that as such, calling this function might actually change the 
+ * actions. Beware that as such, calling this function might actually change the
  * state of your system. Furthermore, calling this function might trigger
  * other operations than solely the supplied one.
  *
@@ -23,9 +23,9 @@ extern "C" {
  * and the type argument are frequently ignored (but not always!).
  */
 __attribute__ ((visibility ("default"))) int sandbox_check_perform(
-    pid_t pid, 
-    const char *operation, 
-    int type, 
+    pid_t pid,
+    const char *operation,
+    int type,
     const char *argument
 );
 

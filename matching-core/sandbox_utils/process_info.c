@@ -43,7 +43,7 @@ int sandbox_check_pidinfo(pid_t target)
 
     int res = proc_pidinfo(pid, PROC_PIDTBSDINFO, 0,
                            &proc, PROC_PIDTBSDINFO_SIZE);
-    
+
     // A return value of PROC_PIDTBSDINFO_SIZE indicates success
     return (res != PROC_PIDTBSDINFO_SIZE);
 }
@@ -52,11 +52,11 @@ int sandbox_check_pidfdinfo(pid_t target)
 {
     pid_t pid = target;
     struct vnode_fdinfowithpath vnode_info;
-    
+
     // Make sure stdout is still valid.
-    int res = proc_pidfdinfo(pid, 0, 
-        PROC_PIDFDVNODEPATHINFO, 
-        &vnode_info, 
+    int res = proc_pidfdinfo(pid, 0,
+        PROC_PIDFDVNODEPATHINFO,
+        &vnode_info,
         PROC_PIDFDVNODEPATHINFO_SIZE);
 
     return (res != PROC_PIDFDVNODEPATHINFO_SIZE);

@@ -167,7 +167,7 @@ static const size_t n_check_functions = sizeof(check_functions) / sizeof(*check_
  *
  * This function performs its work not by querying the kernel interface
  * as sandbox_check does, but instead actually attempts to perform the
- * actions. Beware that as such, calling this function might actually change the 
+ * actions. Beware that as such, calling this function might actually change the
  * state of your system. Furthermore, calling this function might trigger
  * other operations than solely the supplied one.
  *
@@ -177,8 +177,8 @@ static const size_t n_check_functions = sizeof(check_functions) / sizeof(*check_
  */
 int sandbox_check_perform(pid_t pid, const char *operation, int type, const char *argument)
 {
-    for (size_t i = 0; 
-         i < n_check_functions; 
+    for (size_t i = 0;
+         i < n_check_functions;
          ++i)
     {
         const check_function_t *current = &check_functions[i];
@@ -231,7 +231,7 @@ int sandbox_check_all(pid_t pid, const char *op, const char *argument)
 
     for (size_t i = 0;
          i < sizeof(all_checks) / sizeof(*all_checks);
-         ++i) 
+         ++i)
     {
         int decision = -1;
 

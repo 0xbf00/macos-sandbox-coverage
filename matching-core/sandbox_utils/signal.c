@@ -22,11 +22,11 @@ static int fork_allowed()
  */
 int sandbox_check_signal(const char *argument /* unused */)
 {
-    /* 
+    /*
     Practically the only sensible and used
     variation of the signal sandbox operation
     is used to allow parents to signal their children
-    that are in the same sandbox. 
+    that are in the same sandbox.
 
     Here, we replicate this, by first forking and then
     attempting to kill our child. If this succeeds, we

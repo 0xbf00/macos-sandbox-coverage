@@ -40,10 +40,10 @@ static char *file_issue_extension_parse_class(const char *argument)
 {
     const char *str_end = argument + strlen(argument);
     const char *start = strstr(argument, "class: ");
-    
+
     if (!start)
         return NULL;
-    
+
     start += strlen("class: ");
 
     const size_t required_len = str_end - start + 2;

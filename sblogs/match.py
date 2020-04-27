@@ -31,12 +31,10 @@ def perform_matching(state: dict) -> (bool, dict):
         # Dump parameters to disk for matching component
         ruleset_at = os.path.join(tmpdir, "sandbox_profile.json")
         logs_at = os.path.join(tmpdir, "sandbox_logs_processed.json")
-        
         with open(ruleset_at, "w") as f:
             json.dump(sandbox_profile, f, ensure_ascii=False, indent=4)
         with open(logs_at, "w") as f:
             json.dump(processed_logs, f, ensure_ascii=False, indent=4)
-        
         try:
             if 'match_results' not in state:
                 state['match_results'] = dict()
