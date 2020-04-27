@@ -4,11 +4,9 @@
 Tool to collect sandbox logs for a given application. Sandbox logs contain
 all allow and deny decisions that sandboxd was nice enough to log to the system log.
 """
-import argparse
 import os
 import subprocess
 import datetime
-import sys
 import json
 import plistlib
 import tempfile
