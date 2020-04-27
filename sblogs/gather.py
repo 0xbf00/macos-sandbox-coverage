@@ -86,6 +86,7 @@ def process_sb_profiles(state: dict) -> (bool, dict):
     # Compile the profile using stefan esser's tool
     compiled_patched_profile = compile_sb_profile(patched_profile)
     if compiled_patched_profile is None:
+        logger.error(f"Failed to compile patched profile: {APP_CONTAINER}")
         return False, {}
     
     return True, state
