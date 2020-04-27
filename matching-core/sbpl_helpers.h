@@ -12,6 +12,8 @@ extern "C" {
     #include <simbple/src/sb/operations/types.h>
 }
 
+#include <simbple/src/dependencies/sbpldump/convert.h>
+
 namespace sbpl {
     /**
      * For any given operation, a couple of other operations

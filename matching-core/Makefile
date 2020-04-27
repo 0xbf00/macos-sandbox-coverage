@@ -22,6 +22,7 @@ C_OBJECTS = \
 	simbple/src/platform_data/catalina/filters.o
 OBJC_OBJECTS = simbple/src/misc/os_support.o
 CPP_OBJECTS = \
+	simbple/src/dependencies/sbpldump/convert.o \
 	ruleset_helpers.o \
 	sbpl_helpers.o
 OBJECTS = $(C_OBJECTS) $(OBJC_OBJECTS)
