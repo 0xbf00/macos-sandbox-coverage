@@ -53,9 +53,9 @@ def dump_state(state: dict, fp=sys.stdout):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Collect sandbox logs for an application run')
+    parser = argparse.ArgumentParser(description='Collect sandbox coverage information for an application')
     parser.add_argument('--app', required=True,
-                        help='Path to the app for which to collect sandbox logs.')
+                        help='Path to the app for which to compute sandbox coverage data.')
     parser.add_argument('--timeout', required=False, default=None, type=int,
                         help='Number of seconds to wait before killing the program. Leave unspecified to not kill the program at all.')
     args = parser.parse_args()
