@@ -63,6 +63,11 @@ int sandbox_check_file_issue_extension(const char *argument)
     char *target = file_issue_extension_parse_target(argument);
     char *class = file_issue_extension_parse_class(argument);
 
+    if (target == NULL || class == NULL) {
+        fprintf(stderr, "file-issue-extension parse error:\n    argument: %s\n    target: %s\n    class: %s\n", argument, target, class);
+        return -1;
+    }
+
     const char *sandbox_class = NULL;
     if (strcmp(class, "com.apple.app-sandbox.read-write") == 0) {
         sandbox_class = APP_SANDBOX_READ_WRITE;
