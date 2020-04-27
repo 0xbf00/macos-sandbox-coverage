@@ -11,6 +11,8 @@ import json
 import re
 import sys
 
+from typing import Optional
+
 from maap.misc.logger import create_logger
 from maap.misc.filesystem import project_path
 
@@ -39,7 +41,7 @@ def convert_log_entry(log_entry: dict) -> dict:
     Converts log entries from the style returned by `log show` into the style needed
     by the matcher.
     """
-    msg = log_entry["eventMessage"]
+    msg: str = log_entry["eventMessage"]
 
     # Make sure our simple heuristics will not be fooled.
     assert (") allow" in msg or ") deny" in msg) and not (") allow" in msg and ") deny" in msg)
@@ -55,9 +57,42 @@ def convert_log_entry(log_entry: dict) -> dict:
     # At least the decision and the operation should be specified...
     assert len(parts) >= 2
 
+    operation = parts[1]
+
+    # The log format has changed in Catalina. There is no space between the
+    # operation and the argument, eg.: network-outbound*:443
+    network_ops = ['network-bind', 'network-inbound', 'network-outbound']
+    network_op: Optional[str] = None
+    for candidate in network_ops:
+        if operation.startswith(candidate):
+            network_op = candidate
+            break
+    if network_op and operation.startswith(network_op) and operation != network_op:
+        plen = len(network_op)
+        assert len(parts) == 2, str(parts)
+        parts.append(operation[plen:])
+        operation = operation[:plen]
+        assert operation == network_op, operation
+
+    if operation == 'file-issue-extension':
+        assert len(parts) >= 4, str(parts)
+
+        # The log format has changed in Catalina, no space after names for
+        # arguments. Add the space, so that processed logs are uniform.
+
+        rx = re.compile(r'target: ?(.*) class: ?(.*)')
+        m = rx.match(' '.join(parts[2:]))
+        assert m, str(parts)
+        target = m.group(1)
+        cls = m.group(2)
+
+        parts = parts[:2]
+        parts.append('target: ' + target)
+        parts.append('class: ' + cls)
+
     result = {
         "action": parse_action_field(parts[0]),
-        "operation": parts[1]
+        "operation": operation
     }
 
     # ... however, most of the time we'd also like to have an argument
