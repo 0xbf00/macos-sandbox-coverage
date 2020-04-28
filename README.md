@@ -5,9 +5,8 @@ This project contains code to compute sandbox coverage statistics for macOS appl
 ## Installation
 
 ```sh
-$ git clone https://github.com/0xbf00/macos-sandbox-coverage.git
+$ git clone --recursive https://github.com/0xbf00/macos-sandbox-coverage.git
 $ cd macos-sandbox-coverage/
-$ git submodule update --init
 # Setup submodules:
 # - maap: See instructions at https://github.com/0xbf00/maap
 # - simbple: No need to build anything. We are only including some of the project's source code here.
