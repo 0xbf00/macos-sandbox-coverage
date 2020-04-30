@@ -13,8 +13,8 @@ Use [`simbple`](https://github.com/0xbf00/simbple) to do this:
 
 ```sh
 cd data/
-simbple com.generic.container/Container.plist --scheme > generic_profile.sb
-simbple com.generic.container/Container.plist --json > generic_profile.json
+simbple com.generic.container/Container.plist --scheme > "generic_profiles/$(sw_vers -productVersion)-$(sw_vers -buildVersion).sb"
+simbple com.generic.container/Container.plist --json > "generic_profiles/$(sw_vers -productVersion)-$(sw_vers -buildVersion).json"
 ```
 
 Note: the supplied general sandbox profile was generated on macOS 10.14.6. If you intend to use a different version of macOS, you'll need to generate your own generic profiles!

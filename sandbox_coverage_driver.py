@@ -12,7 +12,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
 
 from maap import driver
 from maap.bundle.bundle import Bundle
-from maap.extern.tools import call_sbpl
 from sandbox_coverage import dump_state
 from sblogs.gather import gather_logs
 from sblogs.process import process_logs
@@ -109,8 +108,7 @@ def main() -> None:
     apps_dir = os.path.expanduser(args.applications)
     out_dir = os.path.expanduser(args.output)
 
-    container = 'data/com.generic.container'
-    profile = json.loads(call_sbpl(container, result_format='json'))
+    profile = json.load(open('data/generic_profile.json'))
 
     driver = SandboxCoverageDriver(profile=profile, timeout=60)
     driver.run(apps_dir, out_dir)
