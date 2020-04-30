@@ -63,6 +63,7 @@ def normalise_profile(state: dict) -> (bool, dict):
     """
     app_path = state['arguments']['app']
     metadata = parse_resilient_bytes(state['container_metadata'])
+
     normalised_metadata = normalise_container_metadata(metadata)
 
     norm_profile = profile_for_metadata(normalised_metadata, format='json')
