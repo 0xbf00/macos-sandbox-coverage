@@ -32,6 +32,12 @@ def normalise_container_metadata(metadata: dict) -> dict:
         # For each key, we simply use the key in uppercase, along delimiters as a placeholder.
         sandbox_parameters[key] = "$" + key.upper() + "$"
 
+        # We prepend a slash to the home path in order to avoid paths not
+        # starting with a slash. Otherwise this would conflict with the
+        # Scheme definition of the `home-path-ancestors` in `applications.sb`.
+        if key == '_HOME':
+            sandbox_parameters[key] = "/" + sandbox_parameters[key]
+
     # SandboxProfileDataValidationRedirectablePathsKey contains redirectable paths that are part
     # of the user's home directory. Patch these paths such that the HOME placeholder is used instead.
     redirectable_paths = [x.replace(home_dir, sandbox_parameters['_HOME'])

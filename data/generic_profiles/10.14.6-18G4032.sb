@@ -180,13 +180,13 @@
 )
 (deny
     file-link
-    (subpath "$_HOME$/Library")
+    (subpath "/$_HOME$/Library")
 )
 (allow
     file-link
     (require-all
         (require-any
-            (subpath "$_HOME$/Library/Mobile Documents")
+            (subpath "/$_HOME$/Library/Mobile Documents")
         )
 
         (extension "com.apple.app-sandbox.read-write")
@@ -409,7 +409,7 @@
     file-link
     (require-all
         (require-any
-            (subpath "$_HOME$/Library/Mobile Documents")
+            (subpath "/$_HOME$/Library/Mobile Documents")
         )
 
         (extension "com.apple.librarian.ubiquity-container")
@@ -419,7 +419,7 @@
     file-read*
     (require-all
         (require-any
-            (subpath "$_HOME$/Library/Mobile Documents")
+            (subpath "/$_HOME$/Library/Mobile Documents")
         )
 
         (extension "com.apple.librarian.ubiquity-container")
@@ -431,7 +431,7 @@
         (require-any
             (require-all
                 (extension-class "com.apple.app-sandbox.read")
-                (subpath "$_HOME$/Library/Mobile Documents")
+                (subpath "/$_HOME$/Library/Mobile Documents")
             )
 
         )
@@ -443,7 +443,7 @@
     file-write*
     (require-all
         (require-any
-            (subpath "$_HOME$/Library/Mobile Documents")
+            (subpath "/$_HOME$/Library/Mobile Documents")
         )
 
         (extension "com.apple.librarian.ubiquity-container")
@@ -455,7 +455,7 @@
         (require-any
             (require-all
                 (extension-class "com.apple.app-sandbox.read-write")
-                (subpath "$_HOME$/Library/Mobile Documents")
+                (subpath "/$_HOME$/Library/Mobile Documents")
             )
 
         )
@@ -532,9 +532,9 @@
         )
 
         (require-any
-            (subpath "$_HOME$/Library/Colors")
-            (subpath "$_HOME$/Library/FontCollections")
-            (subpath "$_HOME$/Library/Spelling")
+            (subpath "/$_HOME$/Library/Colors")
+            (subpath "/$_HOME$/Library/FontCollections")
+            (subpath "/$_HOME$/Library/Spelling")
         )
 
     )
@@ -582,26 +582,26 @@
 (allow
     file-read*
     process-exec*
-    (subpath "$_HOME$/Library/Audio")
-    (subpath "$_HOME$/Library/Compositions")
-    (subpath "$_HOME$/Library/Input Methods")
-    (subpath "$_HOME$/Library/PDF Services")
-    (subpath "$_HOME$/Library/QuickLook")
+    (subpath "/$_HOME$/Library/Audio")
+    (subpath "/$_HOME$/Library/Compositions")
+    (subpath "/$_HOME$/Library/Input Methods")
+    (subpath "/$_HOME$/Library/PDF Services")
+    (subpath "/$_HOME$/Library/QuickLook")
 )
 (allow
     file-read*
-    (path "$_HOME$/.CFUserTextEncoding")
-    (subpath "$_HOME$/Library/ColorPickers")
-    (subpath "$_HOME$/Library/Filters")
-    (subpath "$_HOME$/Library/Fonts")
-    (subpath "$_HOME$/Library/KeyBindings")
-    (subpath "$_HOME$/Library/Keyboard Layouts")
-    (path "$_HOME$/Library/Preferences/com.apple.DownloadAssessment.plist")
-    (subpath "$_HOME$/Library/Sounds")
+    (path "/$_HOME$/.CFUserTextEncoding")
+    (subpath "/$_HOME$/Library/ColorPickers")
+    (subpath "/$_HOME$/Library/Filters")
+    (subpath "/$_HOME$/Library/Fonts")
+    (subpath "/$_HOME$/Library/KeyBindings")
+    (subpath "/$_HOME$/Library/Keyboard Layouts")
+    (path "/$_HOME$/Library/Preferences/com.apple.DownloadAssessment.plist")
+    (subpath "/$_HOME$/Library/Sounds")
 )
 (deny
     file-map-executable
-    (subpath "$_HOME$/Library/ColorPickers")
+    (subpath "/$_HOME$/Library/ColorPickers")
 )
 (allow
     user-preference-read
@@ -609,8 +609,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/.GlobalPreferences.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/\\.GlobalPreferences\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/.GlobalPreferences.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/\\.GlobalPreferences\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -618,8 +618,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.AdLib.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AdLib\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.AdLib.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AdLib\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -627,8 +627,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.AppleMultitouchTrackpad.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppleMultitouchTrackpad\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.AppleMultitouchTrackpad.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppleMultitouchTrackpad\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -636,8 +636,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.airplay.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.airplay\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.airplay.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.airplay\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -645,8 +645,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.avfoundation.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.avfoundation\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.avfoundation.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.avfoundation\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -654,8 +654,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.cmio.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.cmio\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.cmio.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.cmio\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -663,8 +663,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.coreanimation.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coreanimation\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.coreanimation.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coreanimation\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -672,8 +672,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.coremedia.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremedia\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.coremedia.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremedia\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -681,8 +681,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.coremediaio.support.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremediaio\\.support\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.coremediaio.support.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremediaio\\.support\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -690,8 +690,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.corevideo.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.corevideo\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.corevideo.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.corevideo\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -699,8 +699,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.DictionaryServices.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.DictionaryServices\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.DictionaryServices.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.DictionaryServices\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -708,8 +708,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.mouse.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.mouse\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.mouse.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.mouse\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -717,8 +717,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.trackpad.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.trackpad\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.trackpad.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.trackpad\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -726,8 +726,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.driver.AppleHIDMouse.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleHIDMouse\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.driver.AppleHIDMouse.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleHIDMouse\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -735,8 +735,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.HIToolbox.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.HIToolbox\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.HIToolbox.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.HIToolbox\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -744,8 +744,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.inputmethodkit.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.inputmethodkit\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.inputmethodkit.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.inputmethodkit\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -753,8 +753,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.LaunchServices.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.LaunchServices\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.LaunchServices.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.LaunchServices\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -762,8 +762,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.lookup.shared.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.lookup\\.shared\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.lookup.shared.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.lookup\\.shared\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -771,8 +771,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.MultitouchSupport.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MultitouchSupport\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.MultitouchSupport.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MultitouchSupport\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -780,8 +780,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.security_common.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security_common\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.security_common.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security_common\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -789,8 +789,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.security.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.security.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -798,8 +798,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.ServicesMenu.Services.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.ServicesMenu\\.Services\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.ServicesMenu.Services.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.ServicesMenu\\.Services\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -807,8 +807,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.speech.synthesis.general.prefs.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.synthesis\\.general\\.prefs\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.speech.synthesis.general.prefs.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.synthesis\\.general\\.prefs\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -816,8 +816,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.speech.voice.prefs.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.voice\\.prefs\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.speech.voice.prefs.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.voice\\.prefs\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -825,8 +825,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.systemsound.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.systemsound\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.systemsound.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.systemsound\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -834,8 +834,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.TelephonyUtilities.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.TelephonyUtilities\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.TelephonyUtilities.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.TelephonyUtilities\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -843,8 +843,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.universalaccess.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.universalaccess\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.universalaccess.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.universalaccess\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -852,8 +852,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/pbs.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/pbs\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/pbs.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/pbs\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -863,8 +863,8 @@
 (allow
     file-read*
     file-write*
-    (path-regex "^\\$_HOME\\$/Library/Preferences/com\\.apple\\.AppKit\\.TextFavorites\\.plist(\\..+)?$")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppKit\\.TextFavorites\\..*\\.plist(\\..+)?$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/com\\.apple\\.AppKit\\.TextFavorites\\.plist(\\..+)?$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppKit\\.TextFavorites\\..*\\.plist(\\..+)?$")
 )
 (deny
     file-write-unlink
@@ -886,8 +886,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.mediaaccessibility.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.mediaaccessibility\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.mediaaccessibility.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.mediaaccessibility\\..*\\.plist$")
 )
 (allow
     user-preference-read
@@ -897,8 +897,8 @@
 (allow
     file-read*
     file-write*
-    (path-regex "^\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\.plist(\\..+)?$")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\..*\\.plist(\\..+)?$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\.plist(\\..+)?$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\..*\\.plist(\\..+)?$")
 )
 (allow
     user-preference-read
@@ -908,20 +908,20 @@
 (allow
     file-read*
     file-write*
-    (path-regex "^\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\.plist(\\..+)?$")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\..*\\.plist(\\..+)?$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\.plist(\\..+)?$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\..*\\.plist(\\..+)?$")
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.LaunchServices/com.apple.LaunchServices.plist")
+    (path "/$_HOME$/Library/Preferences/com.apple.LaunchServices/com.apple.LaunchServices.plist")
 )
 (allow
     file-read*
     (require-any
-        (subpath "$_HOME$/Library/Sounds")
-        (subpath "$_HOME$/Library/Audio/Sounds")
-        (subpath "$_HOME$/Library/Components")
-        (subpath "$_HOME$/Library/QuickTime")
+        (subpath "/$_HOME$/Library/Sounds")
+        (subpath "/$_HOME$/Library/Audio/Sounds")
+        (subpath "/$_HOME$/Library/Components")
+        (subpath "/$_HOME$/Library/QuickTime")
     )
 )
 (allow
@@ -929,33 +929,33 @@
     (require-all
         (extension-class "com.apple.app-sandbox.read")
         (require-any
-            (subpath "$_HOME$/Library/Sounds")
-            (subpath "$_HOME$/Library/Audio/Sounds")
-            (subpath "$_HOME$/Library/Components")
-            (subpath "$_HOME$/Library/QuickTime")
+            (subpath "/$_HOME$/Library/Sounds")
+            (subpath "/$_HOME$/Library/Audio/Sounds")
+            (subpath "/$_HOME$/Library/Components")
+            (subpath "/$_HOME$/Library/QuickTime")
         )
 
     )
 )
 (allow
     process-exec*
-    (subpath "$_HOME$/Library/Components")
-    (subpath "$_HOME$/Library/QuickTime")
+    (subpath "/$_HOME$/Library/Components")
+    (subpath "/$_HOME$/Library/QuickTime")
 )
 (allow
     file-read*
-    (subpath "$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$")
+    (subpath "/$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$")
 )
 (allow
     file-issue-extension
     (require-all
         (extension-class "com.apple.app-sandbox.read")
-        (subpath "$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$")
+        (subpath "/$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$")
     )
 )
 (allow
     process-exec*
-    (subpath "$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$")
+    (subpath "/$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$")
 )
 (allow
     file-read*
@@ -963,7 +963,7 @@
     (path "/Library/Managed Preferences/$_USER$/$APPLICATION_BUNDLE_ID$.plist")
     (path "/Library/Preferences/$APPLICATION_BUNDLE_ID$.plist")
     (subpath "/Library/Application Support/AppStore/Content/$APPLICATION_BUNDLE_ID$")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/\\$APPLICATION_BUNDLE_ID\\$\\.([^\\.]+\\.)?LSSharedFileList\\.plist$")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/\\$APPLICATION_BUNDLE_ID\\$\\.([^\\.]+\\.)?LSSharedFileList\\.plist$")
 )
 (allow
     mach-register
@@ -1023,12 +1023,12 @@
 (allow
     file-read*
     file-write*
-    (path-prefix "$_HOME$/Library/Keychains/")
+    (path-prefix "/$_HOME$/Library/Keychains/")
 )
 (deny
     file-read*
     file-write*
-    (path-regex "^\\$_HOME\\$/Library/Keychains/[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F](/|$)")
+    (path-regex "^/\\$_HOME\\$/Library/Keychains/[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F](/|$)")
 )
 (allow
     file-read*
@@ -1336,7 +1336,7 @@
     file-read*
     file-write*
     (mount-relative-path-regex "^/\\.Trashes(/|$)")
-    (subpath "$_HOME$/.Trash")
+    (subpath "/$_HOME$/.Trash")
 )
 (allow
     iokit-open
@@ -1383,7 +1383,7 @@
 )
 (allow
     file-read*
-    (subpath "$_HOME$/Library/Caches/GeoServices")
+    (subpath "/$_HOME$/Library/Caches/GeoServices")
 )
 (allow
     user-preference-read
@@ -1391,8 +1391,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.GEO.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.GEO\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.GEO.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.GEO\\..*\\.plist$")
 )
 (allow
     file-read-data
@@ -1435,7 +1435,7 @@
 (allow
     file-read*
     (subpath "/Library/ColorSync/Profiles")
-    (subpath "$_HOME$/Library/ColorSync")
+    (subpath "/$_HOME$/Library/ColorSync")
 )
 (allow
     authorization-right-obtain
@@ -1472,8 +1472,8 @@
 )
 (allow
     file-read*
-    (path "$_HOME$/Library/Preferences/com.apple.MobileAsset.plist")
-    (path-regex "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MobileAsset\\..*\\.plist$")
+    (path "/$_HOME$/Library/Preferences/com.apple.MobileAsset.plist")
+    (path-regex "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MobileAsset\\..*\\.plist$")
 )
 (allow
     mach-lookup
@@ -1486,7 +1486,7 @@
         (require-any
             (subpath "/System/Library/Assets")
             (subpath "/Library/Assets")
-            (subpath "$_HOME$/Library/Assets")
+            (subpath "/$_HOME$/Library/Assets")
         )
 
         (extension "com.apple.assets.read")
@@ -1494,7 +1494,7 @@
 )
 (allow
     file-read*
-    (subpath "$_HOME$/Library/Dictionaries")
+    (subpath "/$_HOME$/Library/Dictionaries")
     (subpath "/Library/Dictionaries")
     (subpath "/Network/Library/Dictionaries")
 )
@@ -1524,91 +1524,91 @@
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Downloads")
+        (path "/$_HOME$/Downloads")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Music")
+        (path "/$_HOME$/Music")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library")
+        (path "/$_HOME$/Library")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library")
+        (path "/$_HOME$/Library")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library/Mail")
+        (path "/$_HOME$/Library/Mail")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Documents")
+        (path "/$_HOME$/Documents")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Movies")
+        (path "/$_HOME$/Movies")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library")
+        (path "/$_HOME$/Library")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library/Calendars")
+        (path "/$_HOME$/Library/Calendars")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library")
+        (path "/$_HOME$/Library")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Library/Preferences")
+        (path "/$_HOME$/Library/Preferences")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Pictures")
+        (path "/$_HOME$/Pictures")
         (vnode-type SYMLINK)
     )
 )
 (deny
     file-write-create
     (require-all
-        (path "$_HOME$/Desktop")
+        (path "/$_HOME$/Desktop")
         (vnode-type SYMLINK)
     )
 )

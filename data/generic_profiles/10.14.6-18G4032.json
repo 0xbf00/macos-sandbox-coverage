@@ -880,7 +880,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library"
+                        "value": "/$_HOME$/Library"
                     }
                 ],
                 "name": "subpath"
@@ -903,7 +903,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Mobile Documents"
+                                        "value": "/$_HOME$/Library/Mobile Documents"
                                     }
                                 ],
                                 "name": "subpath"
@@ -1846,7 +1846,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Mobile Documents"
+                                        "value": "/$_HOME$/Library/Mobile Documents"
                                     }
                                 ],
                                 "name": "subpath"
@@ -1882,7 +1882,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Mobile Documents"
+                                        "value": "/$_HOME$/Library/Mobile Documents"
                                     }
                                 ],
                                 "name": "subpath"
@@ -1930,7 +1930,7 @@
                                         "arguments": [
                                             {
                                                 "type": "string",
-                                                "value": "$_HOME$/Library/Mobile Documents"
+                                                "value": "/$_HOME$/Library/Mobile Documents"
                                             }
                                         ],
                                         "name": "subpath"
@@ -1968,7 +1968,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Mobile Documents"
+                                        "value": "/$_HOME$/Library/Mobile Documents"
                                     }
                                 ],
                                 "name": "subpath"
@@ -2016,7 +2016,7 @@
                                         "arguments": [
                                             {
                                                 "type": "string",
-                                                "value": "$_HOME$/Library/Mobile Documents"
+                                                "value": "/$_HOME$/Library/Mobile Documents"
                                             }
                                         ],
                                         "name": "subpath"
@@ -2342,7 +2342,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Colors"
+                                        "value": "/$_HOME$/Library/Colors"
                                     }
                                 ],
                                 "name": "subpath"
@@ -2351,7 +2351,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/FontCollections"
+                                        "value": "/$_HOME$/Library/FontCollections"
                                     }
                                 ],
                                 "name": "subpath"
@@ -2360,7 +2360,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Spelling"
+                                        "value": "/$_HOME$/Library/Spelling"
                                     }
                                 ],
                                 "name": "subpath"
@@ -2539,7 +2539,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Audio"
+                        "value": "/$_HOME$/Library/Audio"
                     }
                 ],
                 "name": "subpath"
@@ -2548,7 +2548,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Compositions"
+                        "value": "/$_HOME$/Library/Compositions"
                     }
                 ],
                 "name": "subpath"
@@ -2557,7 +2557,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Input Methods"
+                        "value": "/$_HOME$/Library/Input Methods"
                     }
                 ],
                 "name": "subpath"
@@ -2566,7 +2566,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/PDF Services"
+                        "value": "/$_HOME$/Library/PDF Services"
                     }
                 ],
                 "name": "subpath"
@@ -2575,7 +2575,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/QuickLook"
+                        "value": "/$_HOME$/Library/QuickLook"
                     }
                 ],
                 "name": "subpath"
@@ -2593,7 +2593,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/.CFUserTextEncoding"
+                        "value": "/$_HOME$/.CFUserTextEncoding"
                     }
                 ],
                 "name": "path"
@@ -2602,7 +2602,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/ColorPickers"
+                        "value": "/$_HOME$/Library/ColorPickers"
                     }
                 ],
                 "name": "subpath"
@@ -2611,7 +2611,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Filters"
+                        "value": "/$_HOME$/Library/Filters"
                     }
                 ],
                 "name": "subpath"
@@ -2620,7 +2620,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Fonts"
+                        "value": "/$_HOME$/Library/Fonts"
                     }
                 ],
                 "name": "subpath"
@@ -2629,7 +2629,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/KeyBindings"
+                        "value": "/$_HOME$/Library/KeyBindings"
                     }
                 ],
                 "name": "subpath"
@@ -2638,7 +2638,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Keyboard Layouts"
+                        "value": "/$_HOME$/Library/Keyboard Layouts"
                     }
                 ],
                 "name": "subpath"
@@ -2647,7 +2647,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.DownloadAssessment.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.DownloadAssessment.plist"
                     }
                 ],
                 "name": "path"
@@ -2656,7 +2656,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Sounds"
+                        "value": "/$_HOME$/Library/Sounds"
                     }
                 ],
                 "name": "subpath"
@@ -2673,7 +2673,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/ColorPickers"
+                        "value": "/$_HOME$/Library/ColorPickers"
                     }
                 ],
                 "name": "subpath"
@@ -2707,7 +2707,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/.GlobalPreferences.plist"
+                        "value": "/$_HOME$/Library/Preferences/.GlobalPreferences.plist"
                     }
                 ],
                 "name": "path"
@@ -2716,7 +2716,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/\\.GlobalPreferences\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/\\.GlobalPreferences\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -2750,7 +2750,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.AdLib.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.AdLib.plist"
                     }
                 ],
                 "name": "path"
@@ -2759,7 +2759,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AdLib\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AdLib\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -2793,7 +2793,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.AppleMultitouchTrackpad.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.AppleMultitouchTrackpad.plist"
                     }
                 ],
                 "name": "path"
@@ -2802,7 +2802,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppleMultitouchTrackpad\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppleMultitouchTrackpad\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -2836,7 +2836,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.airplay.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.airplay.plist"
                     }
                 ],
                 "name": "path"
@@ -2845,7 +2845,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.airplay\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.airplay\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -2879,7 +2879,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.avfoundation.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.avfoundation.plist"
                     }
                 ],
                 "name": "path"
@@ -2888,7 +2888,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.avfoundation\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.avfoundation\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -2922,7 +2922,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.cmio.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.cmio.plist"
                     }
                 ],
                 "name": "path"
@@ -2931,7 +2931,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.cmio\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.cmio\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -2965,7 +2965,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.coreanimation.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.coreanimation.plist"
                     }
                 ],
                 "name": "path"
@@ -2974,7 +2974,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coreanimation\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coreanimation\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3008,7 +3008,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.coremedia.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.coremedia.plist"
                     }
                 ],
                 "name": "path"
@@ -3017,7 +3017,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremedia\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremedia\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3051,7 +3051,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.coremediaio.support.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.coremediaio.support.plist"
                     }
                 ],
                 "name": "path"
@@ -3060,7 +3060,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremediaio\\.support\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.coremediaio\\.support\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3094,7 +3094,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.corevideo.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.corevideo.plist"
                     }
                 ],
                 "name": "path"
@@ -3103,7 +3103,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.corevideo\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.corevideo\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3137,7 +3137,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.DictionaryServices.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.DictionaryServices.plist"
                     }
                 ],
                 "name": "path"
@@ -3146,7 +3146,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.DictionaryServices\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.DictionaryServices\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3180,7 +3180,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.mouse.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.mouse.plist"
                     }
                 ],
                 "name": "path"
@@ -3189,7 +3189,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.mouse\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.mouse\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3223,7 +3223,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.trackpad.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.driver.AppleBluetoothMultitouch.trackpad.plist"
                     }
                 ],
                 "name": "path"
@@ -3232,7 +3232,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.trackpad\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleBluetoothMultitouch\\.trackpad\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3266,7 +3266,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.driver.AppleHIDMouse.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.driver.AppleHIDMouse.plist"
                     }
                 ],
                 "name": "path"
@@ -3275,7 +3275,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleHIDMouse\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.driver\\.AppleHIDMouse\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3309,7 +3309,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.HIToolbox.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.HIToolbox.plist"
                     }
                 ],
                 "name": "path"
@@ -3318,7 +3318,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.HIToolbox\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.HIToolbox\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3352,7 +3352,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.inputmethodkit.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.inputmethodkit.plist"
                     }
                 ],
                 "name": "path"
@@ -3361,7 +3361,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.inputmethodkit\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.inputmethodkit\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3395,7 +3395,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.LaunchServices.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.LaunchServices.plist"
                     }
                 ],
                 "name": "path"
@@ -3404,7 +3404,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.LaunchServices\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.LaunchServices\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3438,7 +3438,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.lookup.shared.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.lookup.shared.plist"
                     }
                 ],
                 "name": "path"
@@ -3447,7 +3447,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.lookup\\.shared\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.lookup\\.shared\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3481,7 +3481,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.MultitouchSupport.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.MultitouchSupport.plist"
                     }
                 ],
                 "name": "path"
@@ -3490,7 +3490,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MultitouchSupport\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MultitouchSupport\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3524,7 +3524,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.security_common.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.security_common.plist"
                     }
                 ],
                 "name": "path"
@@ -3533,7 +3533,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security_common\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security_common\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3567,7 +3567,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.security.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.security.plist"
                     }
                 ],
                 "name": "path"
@@ -3576,7 +3576,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.security\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3610,7 +3610,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.ServicesMenu.Services.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.ServicesMenu.Services.plist"
                     }
                 ],
                 "name": "path"
@@ -3619,7 +3619,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.ServicesMenu\\.Services\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.ServicesMenu\\.Services\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3653,7 +3653,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.speech.synthesis.general.prefs.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.speech.synthesis.general.prefs.plist"
                     }
                 ],
                 "name": "path"
@@ -3662,7 +3662,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.synthesis\\.general\\.prefs\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.synthesis\\.general\\.prefs\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3696,7 +3696,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.speech.voice.prefs.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.speech.voice.prefs.plist"
                     }
                 ],
                 "name": "path"
@@ -3705,7 +3705,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.voice\\.prefs\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.speech\\.voice\\.prefs\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3739,7 +3739,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.systemsound.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.systemsound.plist"
                     }
                 ],
                 "name": "path"
@@ -3748,7 +3748,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.systemsound\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.systemsound\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3782,7 +3782,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.TelephonyUtilities.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.TelephonyUtilities.plist"
                     }
                 ],
                 "name": "path"
@@ -3791,7 +3791,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.TelephonyUtilities\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.TelephonyUtilities\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3825,7 +3825,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.universalaccess.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.universalaccess.plist"
                     }
                 ],
                 "name": "path"
@@ -3834,7 +3834,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.universalaccess\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.universalaccess\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3868,7 +3868,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/pbs.plist"
+                        "value": "/$_HOME$/Library/Preferences/pbs.plist"
                     }
                 ],
                 "name": "path"
@@ -3877,7 +3877,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/pbs\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/pbs\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -3912,7 +3912,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/com\\.apple\\.AppKit\\.TextFavorites\\.plist(\\..+)?$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/com\\.apple\\.AppKit\\.TextFavorites\\.plist(\\..+)?$"
                     }
                 ],
                 "name": "path-regex"
@@ -3921,7 +3921,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppKit\\.TextFavorites\\..*\\.plist(\\..+)?$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.AppKit\\.TextFavorites\\..*\\.plist(\\..+)?$"
                     }
                 ],
                 "name": "path-regex"
@@ -4025,7 +4025,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.mediaaccessibility.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.mediaaccessibility.plist"
                     }
                 ],
                 "name": "path"
@@ -4034,7 +4034,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.mediaaccessibility\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.mediaaccessibility\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -4069,7 +4069,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\.plist(\\..+)?$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\.plist(\\..+)?$"
                     }
                 ],
                 "name": "path-regex"
@@ -4078,7 +4078,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\..*\\.plist(\\..+)?$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ServicesWithUI\\..*\\.plist(\\..+)?$"
                     }
                 ],
                 "name": "path-regex"
@@ -4114,7 +4114,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\.plist(\\..+)?$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\.plist(\\..+)?$"
                     }
                 ],
                 "name": "path-regex"
@@ -4123,7 +4123,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\..*\\.plist(\\..+)?$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.preferences\\.extensions\\.ShareMenu\\..*\\.plist(\\..+)?$"
                     }
                 ],
                 "name": "path-regex"
@@ -4141,7 +4141,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.LaunchServices/com.apple.LaunchServices.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.LaunchServices/com.apple.LaunchServices.plist"
                     }
                 ],
                 "name": "path"
@@ -4161,7 +4161,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Sounds"
+                                "value": "/$_HOME$/Library/Sounds"
                             }
                         ],
                         "name": "subpath"
@@ -4170,7 +4170,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Audio/Sounds"
+                                "value": "/$_HOME$/Library/Audio/Sounds"
                             }
                         ],
                         "name": "subpath"
@@ -4179,7 +4179,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Components"
+                                "value": "/$_HOME$/Library/Components"
                             }
                         ],
                         "name": "subpath"
@@ -4188,7 +4188,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/QuickTime"
+                                "value": "/$_HOME$/Library/QuickTime"
                             }
                         ],
                         "name": "subpath"
@@ -4222,7 +4222,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Sounds"
+                                        "value": "/$_HOME$/Library/Sounds"
                                     }
                                 ],
                                 "name": "subpath"
@@ -4231,7 +4231,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Audio/Sounds"
+                                        "value": "/$_HOME$/Library/Audio/Sounds"
                                     }
                                 ],
                                 "name": "subpath"
@@ -4240,7 +4240,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Components"
+                                        "value": "/$_HOME$/Library/Components"
                                     }
                                 ],
                                 "name": "subpath"
@@ -4249,7 +4249,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/QuickTime"
+                                        "value": "/$_HOME$/Library/QuickTime"
                                     }
                                 ],
                                 "name": "subpath"
@@ -4270,7 +4270,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Components"
+                        "value": "/$_HOME$/Library/Components"
                     }
                 ],
                 "name": "subpath"
@@ -4279,7 +4279,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/QuickTime"
+                        "value": "/$_HOME$/Library/QuickTime"
                     }
                 ],
                 "name": "subpath"
@@ -4296,7 +4296,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$"
+                        "value": "/$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$"
                     }
                 ],
                 "name": "subpath"
@@ -4325,7 +4325,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$"
+                                "value": "/$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$"
                             }
                         ],
                         "name": "subpath"
@@ -4344,7 +4344,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$"
+                        "value": "/$_HOME$/Library/Application Scripts/$APPLICATION_CONTAINER_ID$"
                     }
                 ],
                 "name": "subpath"
@@ -4397,7 +4397,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/\\$APPLICATION_BUNDLE_ID\\$\\.([^\\.]+\\.)?LSSharedFileList\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/\\$APPLICATION_BUNDLE_ID\\$\\.([^\\.]+\\.)?LSSharedFileList\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -4759,7 +4759,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Keychains/"
+                        "value": "/$_HOME$/Library/Keychains/"
                     }
                 ],
                 "name": "path-prefix"
@@ -4777,7 +4777,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Keychains/[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F](/|$)"
+                        "value": "^/\\$_HOME\\$/Library/Keychains/[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F]-[0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F][0-9A-F](/|$)"
                     }
                 ],
                 "name": "path-regex"
@@ -6703,7 +6703,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/.Trash"
+                        "value": "/$_HOME$/.Trash"
                     }
                 ],
                 "name": "subpath"
@@ -6912,7 +6912,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Caches/GeoServices"
+                        "value": "/$_HOME$/Library/Caches/GeoServices"
                     }
                 ],
                 "name": "subpath"
@@ -6946,7 +6946,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.GEO.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.GEO.plist"
                     }
                 ],
                 "name": "path"
@@ -6955,7 +6955,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.GEO\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.GEO\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -7185,7 +7185,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/ColorSync"
+                        "value": "/$_HOME$/Library/ColorSync"
                     }
                 ],
                 "name": "subpath"
@@ -7342,7 +7342,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Preferences/com.apple.MobileAsset.plist"
+                        "value": "/$_HOME$/Library/Preferences/com.apple.MobileAsset.plist"
                     }
                 ],
                 "name": "path"
@@ -7351,7 +7351,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "^\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MobileAsset\\..*\\.plist$"
+                        "value": "^/\\$_HOME\\$/Library/Preferences/ByHost/com\\.apple\\.MobileAsset\\..*\\.plist$"
                     }
                 ],
                 "name": "path-regex"
@@ -7418,7 +7418,7 @@
                                 "arguments": [
                                     {
                                         "type": "string",
-                                        "value": "$_HOME$/Library/Assets"
+                                        "value": "/$_HOME$/Library/Assets"
                                     }
                                 ],
                                 "name": "subpath"
@@ -7448,7 +7448,7 @@
                 "arguments": [
                     {
                         "type": "string",
-                        "value": "$_HOME$/Library/Dictionaries"
+                        "value": "/$_HOME$/Library/Dictionaries"
                     }
                 ],
                 "name": "subpath"
@@ -7578,7 +7578,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Downloads"
+                                "value": "/$_HOME$/Downloads"
                             }
                         ],
                         "name": "path"
@@ -7610,7 +7610,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Music"
+                                "value": "/$_HOME$/Music"
                             }
                         ],
                         "name": "path"
@@ -7642,7 +7642,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library"
+                                "value": "/$_HOME$/Library"
                             }
                         ],
                         "name": "path"
@@ -7674,7 +7674,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library"
+                                "value": "/$_HOME$/Library"
                             }
                         ],
                         "name": "path"
@@ -7706,7 +7706,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Mail"
+                                "value": "/$_HOME$/Library/Mail"
                             }
                         ],
                         "name": "path"
@@ -7738,7 +7738,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Documents"
+                                "value": "/$_HOME$/Documents"
                             }
                         ],
                         "name": "path"
@@ -7770,7 +7770,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Movies"
+                                "value": "/$_HOME$/Movies"
                             }
                         ],
                         "name": "path"
@@ -7802,7 +7802,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library"
+                                "value": "/$_HOME$/Library"
                             }
                         ],
                         "name": "path"
@@ -7834,7 +7834,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Calendars"
+                                "value": "/$_HOME$/Library/Calendars"
                             }
                         ],
                         "name": "path"
@@ -7866,7 +7866,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library"
+                                "value": "/$_HOME$/Library"
                             }
                         ],
                         "name": "path"
@@ -7898,7 +7898,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Library/Preferences"
+                                "value": "/$_HOME$/Library/Preferences"
                             }
                         ],
                         "name": "path"
@@ -7930,7 +7930,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Pictures"
+                                "value": "/$_HOME$/Pictures"
                             }
                         ],
                         "name": "path"
@@ -7962,7 +7962,7 @@
                         "arguments": [
                             {
                                 "type": "string",
-                                "value": "$_HOME$/Desktop"
+                                "value": "/$_HOME$/Desktop"
                             }
                         ],
                         "name": "path"

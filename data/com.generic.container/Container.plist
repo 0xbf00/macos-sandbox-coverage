@@ -20,7 +20,7 @@
 		<key>SandboxProfileDataValidationParametersKey</key>
 		<dict>
 			<key>_HOME</key>
-			<string>$_HOME$</string>
+			<string>/$_HOME$</string>
 			<key>_USER</key>
 			<string>$_USER$</string>
 			<key>application_addressbook_lock_dir</key>
@@ -48,16 +48,16 @@
 		</dict>
 		<key>SandboxProfileDataValidationRedirectablePathsKey</key>
 		<array>
-			<string>$_HOME$/Downloads</string>
-			<string>$_HOME$/Music</string>
-			<string>$_HOME$/Library</string>
-			<string>$_HOME$/Library/Mail</string>
-			<string>$_HOME$/Documents</string>
-			<string>$_HOME$/Movies</string>
-			<string>$_HOME$/Library/Calendars</string>
-			<string>$_HOME$/Library/Preferences</string>
-			<string>$_HOME$/Pictures</string>
-			<string>$_HOME$/Desktop</string>
+			<string>/$_HOME$/Downloads</string>
+			<string>/$_HOME$/Music</string>
+			<string>/$_HOME$/Library</string>
+			<string>/$_HOME$/Library/Mail</string>
+			<string>/$_HOME$/Documents</string>
+			<string>/$_HOME$/Movies</string>
+			<string>/$_HOME$/Library/Calendars</string>
+			<string>/$_HOME$/Library/Preferences</string>
+			<string>/$_HOME$/Pictures</string>
+			<string>/$_HOME$/Desktop</string>
 		</array>
 		<key>SandboxProfileDataValidationRedirectedPathsKey</key>
 		<array/>
