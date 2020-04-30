@@ -2,7 +2,6 @@ import json
 import tempfile
 import os
 import plistlib
-import operator
 
 from maap.misc.plist import parse_resilient_bytes
 from maap.misc.logger import create_logger
