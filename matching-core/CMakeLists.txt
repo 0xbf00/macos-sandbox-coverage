@@ -18,6 +18,7 @@ include_directories(
     "/usr/local/include"
 )
 add_subdirectory(sandbox_utils)
+add_subdirectory(simbple/src/dependencies/sbpldump)
 
 add_executable(${PROJECT_NAME} ${SRCS})
 

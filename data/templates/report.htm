@@ -1,0 +1,88 @@
+{% macro bar(value, rules, rule_count, title='', classes='', show_at=5) %}
+    <div
+        aria-valuemax="100"
+        aria-valuemin="0"
+        aria-valuenow="{{ value }}"
+        class="progress-bar {{ classes }}"
+        data-html="true"
+        data-placement="top"
+        data-toggle="tooltip"
+        role="progressbar"
+        style="width: {{ value }}%;"
+        title="
+           {{ title }} {{ "{:.2f}".format(value) }}&nbsp;%<br/>
+            <small>{{ rules|length|num }} out of {{ rule_count|num }} rules</span>
+        "
+    >
+    {% if show_at <= value %}
+        {{ "{:.2f}".format(value) }} %
+    {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro coverage_bar(app) %}
+    <!-- Covered rules -->
+    {{ bar(app.coverage_allow, app.covered_allow_rules, app.rule_count, title="Allowed", classes="bg-success") }}
+    {{ bar(app.coverage_deny, app.covered_deny_rules, app.rule_count, title="Denied", classes="bg-danger") }}
+    <!-- Only redundant rules -->
+    {{ bar(app.coverage_only_redundant_allow, app.only_redundant_allow_rules, app.rule_count, title="Redundantly allowed but not covered", classes="bg-success striped") }}
+    {{ bar(app.coverage_only_redundant_deny, app.only_redundant_deny_rules, app.rule_count, title="Redundantly denied but not covered", classes="bg-danger striped") }}
+{% endmacro %}
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="popover"]').popover()
+      })
+      $('.popover-dismiss').popover({
+        trigger: 'focus'
+      })
+      $(document).on("click", ".popover .close" , function(){
+        $(this).parents(".popover").popover('hide')
+      })
+    </script>
+    <style>
+      .striped {
+          background-image: linear-gradient(-45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+          background-size: 1rem 1rem;
+      }
+      .stretch {
+          width: 100%;
+      }
+      .close {
+          font-size: 16px;
+          line-height: 19px;
+      }
+      th.sorttable_sorted::after {
+        content: "\25B4";
+        color: #6c757d !important;
+      }
+      th.sorttable_sorted_reverse::after {
+        content: "\25BE";
+        color: #6c757d !important;
+      }
+      #sorttable_sortfwdind, #sorttable_sortrevind { display: none; }
+      {% block style %}{% endblock %}
+      {{ pygments_css }}
+    </style>
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">{% block heading %}{% endblock %}</span>
+    </nav>
+    <div class="container my-3">
+    {% block body %}{% endblock %}
+    </div>{# container #}
+  </body>
+</html>
+
