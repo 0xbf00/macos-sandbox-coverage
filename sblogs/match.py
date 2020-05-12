@@ -23,7 +23,7 @@ def perform_matching(state: dict) -> (bool, dict):
     processed_logs = state['logs']['processed']
     sandbox_profile = json.loads(state['sandbox_profiles']['original'])
 
-    matcher_path = "./matching-core/matcher"
+    matcher_path = "./matching-core/build/bin/matcher"
     assert os.path.exists(matcher_path)
     matcher_path = os.path.abspath(matcher_path)
 

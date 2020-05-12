@@ -1,4 +1,4 @@
-#include <simbple/src/dependencies/sbpldump/convert.h>
+#include <sbpldump/convert.h>
 
 #include "ruleset_helpers.h"
 

@@ -4,6 +4,13 @@ This project contains code to compute sandbox coverage statistics for macOS appl
 
 ## Installation
 
+This project depends on `cmake` and `nlohmann/json`. The dependencies can be installed using homebrew:
+
+```sh
+$ brew tap nlohmann/json
+$ brew install cmake nlohmann_json
+```
+
 ```sh
 $ git clone --recursive https://github.com/0xbf00/macos-sandbox-coverage.git
 $ cd macos-sandbox-coverage/
@@ -11,7 +18,10 @@ $ cd macos-sandbox-coverage/
 # - maap: See instructions at https://github.com/0xbf00/maap
 # - simbple: No need to build anything. We are only including some of the project's source code here.
 # Build matching-core
-$ make -C matching-core
+$ mkdir matching-core/build
+$ cd matching-core/build
+$ cmake ..
+$ make
 ```
 
 ## Usage

@@ -1,5 +1,5 @@
 # Binaries
-matching-core/matcher
+matching-core/build
 
 # Object files
 *.o

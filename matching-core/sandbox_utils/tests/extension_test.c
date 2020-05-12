@@ -1,6 +1,7 @@
-#include "sandbox_utils.h"
 #include <assert.h>
 #include <stdlib.h>
+
+#include "../sandbox_utils.h"
 
 const char *profile = \
     "(version 1)\n"
