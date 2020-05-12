@@ -36,21 +36,21 @@ static const char *io_service_for_user_class(const char *user_class)
     // Precomputed list, by way of Siguza's ioscan utility.
     static const mapping_t mappings[] = {
         { "AGPM", "AGPMClient" },
+        { "AppleHDAEngineInput", "IOAudioEngineUserClient" },
+        { "AppleHSSPIHIDDriver", "IOHIDLibUserClient" },
+        { "AppleHV", "AppleHVClient" },
+        { "AppleLMUController", "AppleLMUClient" },
         { "AppleUpstreamUserClientDriver", "AppleUpstreamUserClient" },
         { "AudioAUUCDriver", "AudioAUUC"},
-        { "IODisplayWrangler", "IOAccelerationUserClient" },
         { "IOAudioSelectorControl", "IOAudioControlUserClient" },
-        { "AppleHDAEngineInput", "IOAudioEngineUserClient" },
         { "IOBluetoothHCIController", "IOBluetoothHCIUserClient" },
-        { "AppleHSSPIHIDDriver", "IOHIDLibUserClient" },
-        { "IOSurfaceRoot", "IOSurfaceRootUserClient" },
-        { "IOUSBRootHubDevice", "IOUSBDeviceUserClientV2" },
-        { "IOUSBInterface", "IOUSBInterfaceUserClientV3" },
+        { "IODisplayWrangler", "IOAccelerationUserClient" },
         { "IOPMrootDomain", "RootDomainUserClient" },
-        { "SMCMotionSensor", "SMCMotionSensorClient" },
+        { "IOSurfaceRoot", "IOSurfaceRootUserClient" },
+        { "IOUSBInterface", "IOUSBInterfaceUserClientV3" },
+        { "IOUSBRootHubDevice", "IOUSBDeviceUserClientV2" },
         { "NVKernel", "nvTeslaSurfaceTesla" },
-        { "AppleHV", "AppleHVClient" },
-        { "AppleLMUController", "AppleLMUClient" }
+        { "SMCMotionSensor", "SMCMotionSensorClient" }
     };
     const size_t n_mappings = sizeof(mappings) / sizeof(*mappings);
 
