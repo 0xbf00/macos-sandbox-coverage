@@ -431,8 +431,6 @@ int main(int argc, char *argv[])
     // Technically not a ruleset, but the function does just JSON parsing.
     json inputs = ruleset::from_file(argv[2]);
 
-    size_t n_unsuccessful = 0;
-
     json result = json::array();
 
     // Initialize platform data
@@ -446,7 +444,6 @@ int main(int argc, char *argv[])
     for (size_t i = 0; i < inputs.size(); ++i) {
         switch (statuses[i]) {
             case SANDBOX_INCONSISTENT:
-                n_unsuccessful++;
                 result.push_back({ i, "inconsistent" });
                 break;
             case SANDBOX_CONSISTENT:
@@ -481,7 +478,6 @@ int main(int argc, char *argv[])
 
         switch (statuses[i]) {
         case SANDBOX_INCONSISTENT:
-            n_unsuccessful++;
             result[idx] = { idx, "inconsistent" };
             break;
         case SANDBOX_CONSISTENT:
