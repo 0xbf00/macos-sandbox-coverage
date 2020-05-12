@@ -26,17 +26,10 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-#include "sbpl_helpers.h"
 #include "ruleset_helpers.h"
 #include "sandbox_utils/sandbox_utils.h"
 
 #include "sandbox_utils/apple_sandbox.h"
-
-extern "C" {
-    #include <simbple/src/platform_data/platforms.h>
-    #include <simbple/src/sb/operations/data.h>
-    #include <simbple/src/sb/operations/types.h>
-}
 
 #include <nlohmann/json.hpp>
 
@@ -432,10 +425,6 @@ int main(int argc, char *argv[])
     json inputs = ruleset::from_file(argv[2]);
 
     json result = json::array();
-
-    // Initialize platform data
-    op_data_provider provider = operations_for_platform(platform_get_default());
-    operations_install(provider);
 
     size_t *rule_indices = NULL;
     enum sandbox_match_status *statuses = sandbox_bulk_find_matching_rule(sandbox_check_custom, ruleset, inputs, &rule_indices);

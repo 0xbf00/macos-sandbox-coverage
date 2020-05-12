@@ -1,5 +1,6 @@
+#include <simbple/src/dependencies/sbpldump/convert.h>
+
 #include "ruleset_helpers.h"
-#include "sbpl_helpers.h"
 
 static size_t file_size(FILE *f)
 {
@@ -47,35 +48,6 @@ namespace ruleset {
     const char *dump_scheme(const json &rulebase)
     {
         return sandbox_rules_dump_scheme(rulebase.dump().c_str());
-    }
-
-    /**
-     * For a given input, e.g the log entry
-     *      "file-read-data /private/etc/hosts"
-     * not every rule is relevant.
-     *
-     * A rule is only relevant iff
-     * it governs the usage of the file-read-data operation.
-     * This is either file-read-data directly or any fallback operations
-     * that might be used.
-     */
-    json relevant_rules_only(const json &rulebase, const json &input)
-    {
-        std::string op_name = input["operation"];
-
-        json output = json::array();
-
-        auto relevant = sbpl::relevant_operations(op_name);
-        for (const json &rule : rulebase) {
-            for (const std::string &current_op : rule["operations"]) {
-                if (relevant.find(current_op) != relevant.end()) {
-                    output.emplace_back(rule);
-                    break;
-                }
-            }
-        }
-
-        return output;
     }
 
     /**

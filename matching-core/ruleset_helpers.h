@@ -13,7 +13,6 @@ namespace ruleset {
     json parse(const char *input);
     json from_file(const char *filename);
     const char *dump_scheme(const json &rulebase);
-    json relevant_rules_only(const json &rulebase, const json &input);
 
     /**
      * Gets the default rule. In case of multiple default rules, the first
