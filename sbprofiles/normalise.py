@@ -3,6 +3,8 @@ import tempfile
 import os
 import plistlib
 
+from typing import Dict, Tuple
+
 from maap.misc.plist import parse_resilient_bytes
 from maap.misc.logger import create_logger
 from maap.extern.tools import call_sbpl
@@ -10,7 +12,7 @@ from maap.extern.tools import call_sbpl
 logger = create_logger('sbprofiles.normalise')
 
 
-def normalise_container_metadata(metadata: dict) -> dict:
+def normalise_container_metadata(metadata: dict) -> Tuple[dict, Dict[str, str]]:
     """Normalises existing container metadata and returns a normalised version
     back to the user.
 
@@ -27,16 +29,21 @@ def normalise_container_metadata(metadata: dict) -> dict:
     # Grab home directory, we need that later.
     home_dir = sandbox_parameters['_HOME']
 
+    replacements: Dict[str, str] = dict()
+
     # Change values for all keys to placeholders.
     for key in sandbox_parameters.keys():
         # For each key, we simply use the key in uppercase, along delimiters as a placeholder.
-        sandbox_parameters[key] = "$" + key.upper() + "$"
+        replacement = "$" + key.upper() + "$"
 
         # We prepend a slash to the home path in order to avoid paths not
         # starting with a slash. Otherwise this would conflict with the
         # Scheme definition of the `home-path-ancestors` in `applications.sb`.
         if key == '_HOME':
-            sandbox_parameters[key] = "/" + sandbox_parameters[key]
+            replacement = '/$_HOME$'
+
+        replacements[replacement] = sandbox_parameters[key]
+        sandbox_parameters[key] = replacement
 
     # SandboxProfileDataValidationRedirectablePathsKey contains redirectable paths that are part
     # of the user's home directory. Patch these paths such that the HOME placeholder is used instead.
@@ -50,7 +57,7 @@ def normalise_container_metadata(metadata: dict) -> dict:
 
     metadata['SandboxProfileDataValidationInfo'] = relevant_entries
 
-    return metadata
+    return metadata, replacements
 
 
 def profile_for_metadata(metadata: dict, format='scheme', patch=False) -> bytes:
@@ -70,7 +77,7 @@ def normalise_profile(state: dict) -> (bool, dict):
     app_path = state['arguments']['app']
     metadata = parse_resilient_bytes(state['container_metadata'])
 
-    normalised_metadata = normalise_container_metadata(metadata)
+    normalised_metadata, replacements = normalise_container_metadata(metadata)
 
     norm_profile = profile_for_metadata(normalised_metadata, format='json')
     if norm_profile is None:
@@ -80,4 +87,5 @@ def normalise_profile(state: dict) -> (bool, dict):
     normalised_profile = json.loads(norm_profile)
 
     state['sandbox_profiles']['normalised'] = normalised_profile
+    state['normalisation_replacements'] = replacements
     return True, state
