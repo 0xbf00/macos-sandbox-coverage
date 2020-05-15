@@ -2,6 +2,7 @@
 #define SANDBOX_UTILS_H
 
 #include "apple_sandbox.h"
+#include "decision.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,7 +23,7 @@ extern "C" {
  * compatability reasons with sandbox_check. Both the pid argument
  * and the type argument are frequently ignored (but not always!).
  */
-__attribute__ ((visibility ("default"))) int sandbox_check_perform(
+__attribute__ ((visibility ("default"))) enum decision sandbox_check_perform(
     pid_t pid,
     const char *operation,
     int type,

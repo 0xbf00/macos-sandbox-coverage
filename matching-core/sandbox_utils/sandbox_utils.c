@@ -175,7 +175,7 @@ static const size_t n_check_functions = sizeof(check_functions) / sizeof(*check_
  * compatability reasons with sandbox_check. Both the pid argument
  * and the type argument are frequently ignored (but not always!).
  */
-int sandbox_check_perform(pid_t pid, const char *operation, int type, const char *argument)
+enum decision sandbox_check_perform(pid_t pid, const char *operation, int type, const char *argument)
 {
     for (size_t i = 0;
          i < n_check_functions;
@@ -185,14 +185,22 @@ int sandbox_check_perform(pid_t pid, const char *operation, int type, const char
         if (strcmp(current->operation, operation) == 0) {
             // Found match
             if (current->function_type == ARGUMENT_TYPE_PID) {
-                return current->function.pid_func(pid);
+                const int rv = current->function.pid_func(pid);
+                if (!(rv == 0 || rv == 1)) {
+                    return DECISION_ERROR;
+                }
+                return rv == 0 ? DECISION_ALLOW : DECISION_DENY;
+            } else {
+                const int rv = current->function.str_func(argument);
+                if (!(rv == 0 || rv == 1)) {
+                    return DECISION_ERROR;
+                }
+                return rv == 0 ? DECISION_ALLOW : DECISION_DENY;
             }
-            else
-                return current->function.str_func(argument);
         }
     }
 
-    return -1;
+    return DECISION_UNKNOWN; // not tested
 }
 
 int sandbox_install_profile(const char *profile)

@@ -15,11 +15,11 @@ int main(int argc, char *argv[])
     assert(0 == sandbox_install_profile(profile));
 
     // Argument is ignored by our function.
-    assert(0 == sandbox_check_perform(getpid(), "process-info-dirtycontrol", 0, ""));
+    assert(DECISION_ALLOW == sandbox_check_perform(getpid(), "process-info-dirtycontrol", 0, ""));
     // Multiple calls are OK.
-    assert(0 == sandbox_check_perform(getpid(), "process-info-dirtycontrol", 0, ""));
+    assert(DECISION_ALLOW == sandbox_check_perform(getpid(), "process-info-dirtycontrol", 0, ""));
 
-    assert(0 == sandbox_check_perform(getpid(), "process-info-setcontrol", 0, ""));
+    assert(DECISION_ALLOW == sandbox_check_perform(getpid(), "process-info-setcontrol", 0, ""));
 
     return EXIT_SUCCESS;
 }

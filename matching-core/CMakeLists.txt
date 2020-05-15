@@ -3,7 +3,6 @@ project(matcher)
 
 set(SRCS
     matcher.cpp
-    ruleset_helpers.cpp
 )
 
 set(CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}/bin)
