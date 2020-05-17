@@ -1,0 +1,96 @@
+{% extends "report.htm" %}
+
+{% block style %}
+    {{pygments_css}}
+
+    pre {
+        margin-bottom: 0;
+    }
+
+    .rule-info {
+        position: relative;
+        float: right;
+    }
+
+    .not-a-rule {
+        background-color: rgba(0,0,0,.125);
+    }
+{% endblock %}
+
+{% block title -%}
+  {{ title }}{% if not app.info.is_empty %} – {{app.info.name}}{% endif %}
+{%- endblock %}
+
+{% block heading %}{{ title }}{% endblock %}
+
+{% block body %}
+
+<div class="card">
+  <h5 class="card-header">
+    {{ app.info.name }}
+    {% if not app.info.is_empty %}
+    <a
+      class="badge badge-primary text-white"
+      data-content="
+      <strong>Path</strong> {{app.info.path}}</br>
+      <strong>Bundle-ID</strong> {{app.info.bundle_id}}</br>
+      <strong>Version</strong> {{app.info.version}}</br>
+      "
+      data-html="true"
+      data-placement="right"
+      data-toggle="popover"
+      role="button"
+      title="{{app.info.name}}
+      <a type='button' class='close' aria-label='Close'>
+        <span aria-hidden='true'>&times;</span>
+      </a>"
+    >i</a>
+    {% endif %}
+  </h5>
+  <div class="list-group list-group-flush">
+  {% for rule in app.rules %}
+  <div id="rule-{{ loop.index0 }}" class="list-group-item
+      {% if rule.is_allow %}
+          {% if rule.is_covered or rule.is_redundant %}list-group-item-success{% endif %}
+          {% if rule.is_redundant and not rule.is_covered %}striped{% endif %}
+      {% endif %}
+      {% if rule.is_deny %}
+          {% if rule.is_covered or rule.is_redundant %}list-group-item-danger{% endif %}
+          {% if rule.is_redundant and not rule.is_covered %}striped{% endif %}
+      {% endif %}
+      {% if rule.is_other %}not-a-rule striped{% endif %}">
+      <div class="rule-info">
+        <small class="text-muted text-right">#{{loop.index0}}</small><br/>
+        <small>
+          {% if rule.is_covered %}
+            {{ rule.hits|num }}&nbsp;hit{% if rule.hits != 1 %}s{% endif %}
+          {% endif %}
+          {% if rule.is_covered and rule.is_redundant %}<br/>{% endif %}
+          {% if rule.is_redundant %}
+            {{ rule.redundant_hits|num }}&nbsp;redundant hit{% if rule.redundant_hits != 1 %}s{% endif %}
+            {% if rule.redundancy_sources %}
+            <a tabindex="0" class="badge badge-light" role="button" data-toggle="popover" data-trigger="focus" data-placement="left" data-html="true" title="Redundant hits to" data-content="
+              {% for rule_idx in rule.redundancy_sources %}
+                {% if loop.index0 != 0 %}, {% endif %}
+                {% if rule_idx is none %}
+                  implicit default
+                {% else %}
+                  <a href='#rule-{{rule_idx}}'>#{{rule_idx}}
+                {% endif %}
+              {% endfor %}">i</a>
+            {% endif %}
+          {% endif %}
+        </small>
+      </div>{# rule-info #}
+      {{ rule.sbpl|pygmentize }}
+    </div>
+  {% endfor %}
+  </div>{# list-group #}
+  <div class="card-footer text-muted" style="border-top: 0;">
+    <div class="progress mb-1">{{ coverage_bar(app) }}</div>
+    <small class="font-weight-bolder">Coverage: {{ "{:.2f}".format(app.coverage) }} %</small>
+    <small>({{ app.covered_rules|length|num }} out of {{ app.rule_count }} rules)</small>
+  </div>
+</div>{# card #}
+
+{% endblock %}

@@ -3,7 +3,6 @@ project(matcher)
 
 set(SRCS
     matcher.cpp
-    ruleset_helpers.cpp
 )
 
 set(CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}/bin)
@@ -19,6 +18,7 @@ include_directories(
     "/usr/local/include"
 )
 add_subdirectory(sandbox_utils)
+add_subdirectory(simbple/src/dependencies/sbpldump)
 
 add_executable(${PROJECT_NAME} ${SRCS})
 

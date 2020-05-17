@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
 {
     assert(0 == sandbox_install_profile(profile));
 
-    assert(0 == sandbox_check_perform(0, "nvram-get", 0, "ALS_Data"));
-    assert(1 == sandbox_check_perform(0, "nvram-get", 0, "SystemAudioVolume"));
+    assert(DECISION_ALLOW == sandbox_check_perform(0, "nvram-get", 0, "ALS_Data"));
+    assert(DECISION_DENY == sandbox_check_perform(0, "nvram-get", 0, "SystemAudioVolume"));
 
     return EXIT_SUCCESS;
 }

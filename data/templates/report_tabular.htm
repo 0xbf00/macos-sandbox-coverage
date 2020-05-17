@@ -1,0 +1,56 @@
+{% extends "report.htm" %}
+
+{% block style %}
+{% endblock style %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block heading %}{{ title }}{% endblock %}
+
+{% block body %}
+
+
+<table class="table table-sm sortable">
+  <thead>
+    <tr>
+      <th scope="col" colspan="2">Application</th>
+      <th scope="col" colspan="2">Coverage</th>
+    </tr>
+  </thead>
+  {% for app in apps %}
+  <tr>
+    <td>{{app.info.name}}</td>
+    <td>
+      {% if not app.info.is_empty %}
+      <a
+        class="badge badge-light"
+        data-content="
+        <strong>Path</strong> {{app.info.path}}</br>
+        <strong>Bundle-ID</strong> {{app.info.bundle_id}}</br>
+        <strong>Version</strong> {{app.info.version}}</br>
+        "
+        data-html="true"
+        data-placement="right"
+        data-toggle="popover"
+        role="button"
+        title="{{app.info.name}}
+        <a type='button' class='close' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </a>"
+      >i</a>
+      {% endif %}
+    </td>
+    <td class="stretch" sorttable_customkey="{{ app.coverage }}">
+      <div class="progress mt-1">{{ coverage_bar(app) }}</div>
+    </td>
+    <td class="text-right">{{ "{:.2f}".format(app.coverage) }}&nbsp;%</td>
+  </tr>
+  {% endfor %}
+  <tfoot>
+    <tr>
+      <th scope="row" colspan="3">Average coverage</th>
+      <th scope="col" class="text-right">{{ "{:.2f}".format(average_coverage) }}&nbsp;%</th>
+    </tr>
+  </tfoot>
+</table>
+
+{% endblock body %}

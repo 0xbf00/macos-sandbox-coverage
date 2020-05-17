@@ -24,11 +24,18 @@ int sandbox_check_shm_write_create(const char *name)
         close(existing);
 
         if (shm_unlink(name) != 0) {
-            return -1;
+            PRINT_ERROR("Cannot unlink existing descriptor");
+            if (errno == EACCES || errno == EPERM) {
+                return 1;
+            } else {
+                return -1;
+            }
         }
     } else {
-        if (errno == EPERM)
+        if (errno == EPERM) {
+            PRINT_ERROR("No permission to open file descriptor");
             return -1;
+        }
     }
 
     int fd = shm_open(name, O_RDWR | O_CREAT, 0777);
