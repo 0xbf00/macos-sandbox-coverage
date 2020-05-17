@@ -1,0 +1,136 @@
+{
+  "AGDPClientControl": [
+    "AppleGraphicsDeviceControlClient"
+  ],
+  "AGPM": [
+    "AGPMClient"
+  ],
+  "AppleAPFSContainer": [
+    "AppleAPFSUserClient"
+  ],
+  "AppleActuatorDevice": [
+    "AppleActuatorDeviceUserClient"
+  ],
+  "AppleBluetoothHIDKeyboard": [
+    "IOHIDLibUserClient"
+  ],
+  "AppleFDEKeyStore": [
+    "AppleFDEKeyStoreUserClient"
+  ],
+  "AppleHDAEngineInput": [
+    "IOAudioEngineUserClient"
+  ],
+  "AppleHDAEngineOutput": [
+    "IOAudioEngineUserClient"
+  ],
+  "AppleHSSPIController": [
+    "AppleHSSPIControllerUserClient"
+  ],
+  "AppleHSSPIHIDDriver": [
+    "IOHIDLibUserClient"
+  ],
+  "AppleIntelFramebuffer": [
+    "IOFramebufferSharedUserClient"
+  ],
+  "AppleIntelMEClientController": [
+    "AppleIntelMEUserClient"
+  ],
+  "AppleKeyStore": [
+    "AppleKeyStoreUserClient"
+  ],
+  "AppleMCCSControlModule": [
+    "AppleMCCSUserClient"
+  ],
+  "AppleMobileFileIntegrity": [
+    "AppleMobileFileIntegrityUserClient"
+  ],
+  "AppleMultitouchDevice": [
+    "AppleMultitouchDeviceUserClient"
+  ],
+  "ApplePlatformEnabler": [
+    "ApplePlatformEnablerUserClient"
+  ],
+  "AppleRTC": [
+    "AppleRTCUserClient"
+  ],
+  "AppleSMC": [
+    "AppleSMCClient"
+  ],
+  "AppleUpstreamUserClientDriver": [
+    "AppleUpstreamUserClient"
+  ],
+  "AudioAUUCDriver": [
+    "AudioAUUC"
+  ],
+  "IOAVBNub": [
+    "IOAVBNubUserClient"
+  ],
+  "IOAudioLevelControl": [
+    "IOAudioControlUserClient"
+  ],
+  "IOAudioSelectorControl": [
+    "IOAudioControlUserClient"
+  ],
+  "IOAudioToggleControl": [
+    "IOAudioControlUserClient"
+  ],
+  "IOBluetoothDevice": [
+    "IOBluetoothDeviceUserClient"
+  ],
+  "IOBluetoothHCIController": [
+    "IOBluetoothHCIPacketLogUserClient",
+    "IOBluetoothHCIUserClient"
+  ],
+  "IODisplayWrangler": [
+    "IOAccelerationUserClient"
+  ],
+  "IOFramebufferI2CInterface": [
+    "IOI2CInterfaceUserClient"
+  ],
+  "IOHIDSystem": [
+    "IOHIDParamUserClient"
+  ],
+  "IONVMeBlockStorageDevice": [
+    "AppleNVMeSMARTUserClient"
+  ],
+  "IOPMrootDomain": [
+    "RootDomainUserClient"
+  ],
+  "IOReportHub": [
+    "IOReportUserClient"
+  ],
+  "IOSurfaceRoot": [
+    "IOSurfaceRootUserClient"
+  ],
+  "IOThunderboltController": [
+    "IOThunderboltFamilyUserClient"
+  ],
+  "IOTimeSyncClockManager": [
+    "IOTimeSyncClockManagerUserClient"
+  ],
+  "IOUSBDevice": [
+    "IOUSBDeviceUserClientV2"
+  ],
+  "IOUSBInterface": [
+    "IOUSBInterfaceUserClientV3"
+  ],
+  "IOUSBRootHubDevice": [
+    "IOUSBDeviceUserClientV2"
+  ],
+  "IntelAccelerator": [
+    "IGAccel2DContext",
+    "IGAccelCLContext",
+    "IGAccelCommandQueue",
+    "IGAccelDevice",
+    "IGAccelSharedUserClient",
+    "IGAccelSurface",
+    "IGAccelVideoContextMain",
+    "IGAccelVideoContextMedia",
+    "IGAccelVideoContextVEBox",
+    "IOAccelDisplayPipeUserClient2",
+    "IOAccelMemoryInfoUserClient"
+  ],
+  "IntelFBClientControl": [
+    "AppleGraphicsDeviceControlClient"
+  ]
+}

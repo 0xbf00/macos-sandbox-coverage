@@ -2,7 +2,10 @@
 
 #include <IOKit/IOKitLib.h>
 #include <IOKit/usb/IOUSBLib.h>
+#include <assert.h>
+#include <stdlib.h>
 #include <string.h>
+
 
 /**
  * Convert CFStringRef to C string.
@@ -26,140 +29,192 @@ static const char *str_for_cfstr(CFStringRef str)
     return strdup(local_buf);
 }
 
-static const char *io_service_for_user_class(const char *user_class)
+/**
+ * Get a service for a given user class. We use a pre-computed list based on
+ * Siguza's ioscan utility. We cannot directly integrate ioscan here, because
+ * we run in a sandbox and cannot arbitrarily open services. We can only
+ * identify services we are allowed to open, but we also wnat know whether the
+ * sandbox denies us to open a specific service.
+ *
+ * Trying to find the respective service without opening services will not
+ * suffice, as iterated user clients depend heavily on the system's state, such
+ * as currently running processes.
+ *
+ * The mapping can be generated beforehand with the iomap.py script.
+ */
+static size_t io_services_for_user_class(const char *user_class, const char ***service_names)
 {
     typedef struct {
-        const char *key;
-        const char *value;
+        const char *service;
+        const char *client;
     } mapping_t;
 
-    // Precomputed list, by way of Siguza's ioscan utility.
     static const mapping_t mappings[] = {
-        { "AGPM", "AGPMClient" },
-        { "AppleHDAEngineInput", "IOAudioEngineUserClient" },
-        { "AppleHSSPIHIDDriver", "IOHIDLibUserClient" },
+        // Mappings from before 10.14.6? They were in the pre-computed list
+        // before but not found for
+        // - macOS 10.14.6 (18G4032)
+        // - macOS 10.15.4 (19E287)
         { "AppleHV", "AppleHVClient" },
         { "AppleLMUController", "AppleLMUClient" },
-        { "AppleUpstreamUserClientDriver", "AppleUpstreamUserClient" },
-        { "AudioAUUCDriver", "AudioAUUC"},
-        { "IOAudioSelectorControl", "IOAudioControlUserClient" },
-        { "IOBluetoothHCIController", "IOBluetoothHCIUserClient" },
-        { "IODisplayWrangler", "IOAccelerationUserClient" },
         { "IOGraphicsDevice", "IOFramebufferSharedUserClient" },
-        { "IOPMrootDomain", "RootDomainUserClient" },
-        { "IORegistryEntry", "AppleUSBHostDeviceUserClient" },
-        { "IORegistryEntry", "AppleUSBLegacyDeviceUserClient" },
-        { "IORegistryEntry", "IGAccelCommandQueue" },
-        { "IORegistryEntry", "IGAccelDevice" },
-        { "IORegistryEntry", "IGAccelGLContext" },
-        { "IORegistryEntry", "IGAccelSharedUserClient" },
-        { "IORegistryEntry", "IOHIDParamUserClient" },
-        { "IOSurfaceRoot", "IOSurfaceRootUserClient" },
-        { "IOUSBInterface", "IOUSBInterfaceUserClientV3" },
-        { "IOUSBRootHubDevice", "IOUSBDeviceUserClientV2" },
         { "NVKernel", "nvTeslaSurfaceTesla" },
-        { "SMCMotionSensor", "SMCMotionSensorClient" }
+        { "SMCMotionSensor", "SMCMotionSensorClient" },
+
+        // Common for
+        // - macOS 10.14.6 (18G4032)
+        // - macOS 10.15.4 (19E287)
+        {"AGPM", "AGPMClient"},
+        {"AppleAPFSContainer", "AppleAPFSUserClient"},
+        {"AppleActuatorDevice", "AppleActuatorDeviceUserClient"},
+        {"AppleFDEKeyStore", "AppleFDEKeyStoreUserClient"},
+        {"AppleHDAEngineInput", "IOAudioEngineUserClient"},
+        {"AppleHDAEngineOutput", "IOAudioEngineUserClient"},
+        {"AppleHSSPIController", "AppleHSSPIControllerUserClient"},
+        {"AppleHSSPIHIDDriver", "IOHIDLibUserClient"},
+        {"AppleIntelFramebuffer", "IOFramebufferSharedUserClient"},
+        {"AppleKeyStore", "AppleKeyStoreUserClient"},
+        {"AppleMCCSControlModule", "AppleMCCSUserClient"},
+        {"AppleMobileFileIntegrity", "AppleMobileFileIntegrityUserClient"},
+        {"AppleMultitouchDevice", "AppleMultitouchDeviceUserClient"},
+        {"ApplePlatformEnabler", "ApplePlatformEnablerUserClient"},
+        {"AppleRTC", "AppleRTCUserClient"},
+        {"AppleSMC", "AppleSMCClient"},
+        {"AppleUpstreamUserClientDriver", "AppleUpstreamUserClient"},
+        {"AudioAUUCDriver", "AudioAUUC"},
+        {"IOAVBNub", "IOAVBNubUserClient"},
+        {"IOAudioLevelControl", "IOAudioControlUserClient"},
+        {"IOAudioSelectorControl", "IOAudioControlUserClient"},
+        {"IOAudioToggleControl", "IOAudioControlUserClient"},
+        {"IOBluetoothHCIController", "IOBluetoothHCIUserClient"},
+        {"IODisplayWrangler", "IOAccelerationUserClient"},
+        {"IOFramebufferI2CInterface", "IOI2CInterfaceUserClient"},
+        {"IOHIDSystem", "IOHIDParamUserClient"},
+        {"IOPMrootDomain", "RootDomainUserClient"},
+        {"IOReportHub", "IOReportUserClient"},
+        {"IOSurfaceRoot", "IOSurfaceRootUserClient"},
+        {"IOThunderboltController", "IOThunderboltFamilyUserClient"},
+        {"IOTimeSyncClockManager", "IOTimeSyncClockManagerUserClient"},
+        {"IntelAccelerator", "IGAccel2DContext"},
+        {"IntelAccelerator", "IGAccelCLContext"},
+        {"IntelAccelerator", "IGAccelCommandQueue"},
+        {"IntelAccelerator", "IGAccelDevice"},
+        {"IntelAccelerator", "IGAccelGLContext"},
+        {"IntelAccelerator", "IGAccelSharedUserClient"},
+        {"IntelAccelerator", "IGAccelSurface"},
+        {"IntelAccelerator", "IGAccelVideoContextMain"},
+        {"IntelAccelerator", "IGAccelVideoContextMedia"},
+        {"IntelAccelerator", "IGAccelVideoContextVEBox"},
+        {"IntelAccelerator", "IOAccelDisplayPipeUserClient2"},
+        {"IntelAccelerator", "IOAccelMemoryInfoUserClient"},
+        {"IntelFBClientControl", "AppleGraphicsDeviceControlClient"},
+
+        // macOS 10.14.6 (18G4032)
+        {"AGDPClientControl", "AppleGraphicsDeviceControlClient"},
+        {"AppleBluetoothHIDKeyboard", "IOHIDLibUserClient"},
+        {"AppleHDAAudioSelectorControlDP", "IOAudioControlUserClient"},
+        {"AppleHDAEngineOutputDP", "IOAudioEngineUserClient"},
+        {"AppleIntelMEClientController", "AppleIntelMEUserClient"},
+        {"AppleMikeyHIDDriver", "IOHIDLibUserClient"},
+        {"IOBluetoothDevice", "IOBluetoothDeviceUserClient"},
+        {"IOBluetoothHCIController", "IOBluetoothHCIPacketLogUserClient"},
+        {"IONVMeBlockStorageDevice", "AppleNVMeSMARTUserClient"},
+        {"IOUSBDevice", "IOUSBDeviceUserClientV2"},
+        {"IOUSBInterface", "IOUSBInterfaceUserClientV3"},
+        {"IOUSBRootHubDevice", "IOUSBDeviceUserClientV2"},
+
+        // macOS 10.15.4 (19E287)
+        {"AGDPClientControl", "AGDPUserClient"},
+        {"AppleAHCIDiskDriver", "AHCISMARTUserClient"},
+        {"AppleBroadcomBluetoothHostController", "IOBluetoothHostControllerUserClient"},
+        {"AppleMEClientController", "AppleSNBFBUserClient"},
+        {"IOBluetoothPacketLogger", "IOBluetoothPacketLoggerUserClient"},
+        {"IOHIDUserDevice", "IOHIDLibUserClient"},
+        {"IOTimeSyncDomain", "IOTimeSyncDomainUserClient"},
+        {"IOTimeSyncgPTPManager", "IOTimeSyncgPTPManagerUserClient"},
+        {"IOUSBInterface", "AppleUSBHostInterfaceUserClient"},
+        {"IOUSBMassStorageResource", "IOUSBMassStorageResourceUserClient"},
+        {"IOUSBRootHubDevice", "AppleUSBLegacyDeviceUserClient"},
+        {"IntelAccelerator", "IOAccelGLDrawableUserClient"},
+        {"IntelAccelerator", "IOAccelSurfaceMTL"}
+
     };
     const size_t n_mappings = sizeof(mappings) / sizeof(*mappings);
 
     if (!user_class)
-        return NULL;
+        return 0;
 
     // Reverse lookup in table above.
+    size_t service_count = 0;
     for (size_t i = 0; i < n_mappings; ++i) {
-        if (strcmp(mappings[i].value, user_class) == 0)
-            return mappings[i].key;
+        const mapping_t current = mappings[i];
+        if (strcmp(current.client, user_class) == 0) {
+            service_count++;
+            if (service_count == 1) {
+                *service_names = malloc(sizeof(const char*));
+            } else {
+                *service_names = realloc(*service_names, sizeof(const char*) * service_count);
+            }
+            if (!*service_names)
+                return 0;
+            (*service_names)[service_count - 1] = current.service;
+        }
     }
-
-    return NULL;
+    return service_count;
 }
 
 /**
- * Lookup IOKit service name for (internal) IOKit class
- * Unused right now, because it is flaky for some inputs.
+ * This function tests, whether the process is allowed to open any service
+ * associated with the given client class name.
+ *
+ * Unfortunately, we do not now the actual service that was opened when the log
+ * was generated. We only know the client. Therefore, we have to identify
+ * associated services for the given client.
+ *
+ * Since clients can be used for multiple services and a service stored in our
+ * pre-computed service mapping might belong to another macOS version, we simply
+ * try top open all associated services and if one succeeds we assume that the
+ * operation succeeds.
+ *
+ * If all services are denied to be opened (return value 1), the result is
+ * correct. However, if we find a single service that we are allowed to open
+ * (return value 0), the result might not be correct, as a different service
+ * could have been used originally, which would result in an inconsistent match.
  */
-static const char *IOServiceNameForClass(const char *name)
-{
-    if (!name)
-        return NULL;
-
-    CFStringRef class = CFStringCreateWithCStringNoCopy(NULL,
-        name, kCFStringEncodingUTF8, kCFAllocatorNull);
-    CFStringRef bundle_id = IOObjectCopyBundleIdentifierForClass(class);
-
-    const char *candidate_service = NULL;
-    const char *service = NULL;
-
-    if (bundle_id == NULL)
-        return NULL;
-
-    io_iterator_t it = MACH_PORT_NULL;
-    io_object_t o;
-
-    if(IORegistryCreateIterator(kIOMasterPortDefault, kIOServicePlane, kIORegistryIterateRecursively, &it) == KERN_SUCCESS)
-    {
-        while((o = IOIteratorNext(it)) != 0)
-        {
-            CFMutableDictionaryRef p = NULL;
-            kern_return_t ret = IORegistryEntryCreateCFProperties(o, &p, NULL, 0);
-
-            if (ret == KERN_SUCCESS) {
-                CFStringRef kext_bundle_id = CFDictionaryGetValue(p, CFSTR("CFBundleIdentifier"));
-
-                if (kext_bundle_id && CFEqual(kext_bundle_id, bundle_id)) {
-                    // Check to see if the correct IOUserClientClass is specified.
-                    CFStringRef user_client = CFDictionaryGetValue(p, CFSTR("IOUserClientClass"));
-                    // Grab name of providing class
-                    CFStringRef service_name = CFDictionaryGetValue(p, CFSTR("IOClass"));
-
-                    if (user_client && CFEqual(user_client, class)) {
-                        service = str_for_cfstr(service_name);
-                    } else {
-                        candidate_service = str_for_cfstr(service_name);
-                    }
-                }
-            }
-
-            CFRelease(p);
-            IOObjectRelease(o);
-            if (service)
-                break;
-        }
-        IOObjectRelease(it);
-    }
-
-    CFRelease(bundle_id);
-    CFRelease(class);
-
-    if (!service)
-        service = candidate_service;
-
-    return service;
-}
-
 int sandbox_check_iokit_open(const char *name)
 {
-    kern_return_t     kr;
-    io_service_t      serviceObject;
-    io_connect_t dataPort = 0;
-
-    const char *service_name = io_service_for_user_class(name);
-    if (!service_name)
+    const char **service_names = NULL;
+    size_t service_count = io_services_for_user_class(name, &service_names);
+    if (0 == service_count)
         return -1;
 
-    serviceObject = IOServiceGetMatchingService(kIOMasterPortDefault,
-                        IOServiceNameMatching(service_name));
+    assert(service_names);
 
-    if (!serviceObject) {
-        return 1;
+    // We need to be able to at least open one service in order to decide that
+    // the currently checked rule is allowed, since we do not know which
+    // service was requested.
+    for (size_t i = 0; i < service_count; i++) {
+        const char *service_name = service_names[i];
+
+        io_service_t service = IOServiceGetMatchingService(
+            kIOMasterPortDefault,
+            IOServiceNameMatching(service_name)
+        );
+
+        if (!service)
+            continue;
+
+        io_connect_t port = MACH_PORT_NULL;
+        const kern_return_t kr = IOServiceOpen(service, mach_task_self(), 0, &port);
+        IOObjectRelease(service);
+        if (kr != KERN_SUCCESS)
+            continue;
+        assert(MACH_PORT_VALID(port));
+
+        IOServiceClose(port);
+        free(service_names);
+        return 0;
     }
 
-    kr = IOServiceOpen(serviceObject, mach_task_self(), 0, &dataPort);
-    IOObjectRelease(serviceObject);
-    if (kr != KERN_SUCCESS) {
-        return 1;
-    }
-
-    IOServiceClose(dataPort);
-    return 0;
+    free(service_names);
+    return 1;
 }
