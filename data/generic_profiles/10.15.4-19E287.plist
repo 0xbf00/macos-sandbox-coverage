@@ -61,6 +61,8 @@
 		<array/>
 		<key>SandboxProfileDataValidationVersionKey</key>
 		<integer>2</integer>
+		<key>SystemImages</key>
+		<array/>
 		<key>SystemProfiles</key>
 		<array>
 			<dict>
