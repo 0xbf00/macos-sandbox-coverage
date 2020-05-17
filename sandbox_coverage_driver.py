@@ -2,7 +2,6 @@
 
 import argparse
 import io
-import json
 import os
 import sys
 
@@ -12,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
 
 from maap import driver
 from maap.bundle.bundle import Bundle
-from sandbox_coverage import dump_state
+from sandbox_coverage import dump_state, get_generic_profile
 from sblogs.gather import gather_logs
 from sblogs.process import process_logs
 from sblogs.match import perform_matching
@@ -115,7 +114,7 @@ def main() -> None:
     apps_dir = os.path.expanduser(args.applications)
     out_dir = os.path.expanduser(args.output)
 
-    profile = json.load(open('data/generic_profile.json'))
+    profile = get_generic_profile()
 
     sbc = SandboxCoverageDriver(profile=profile, timeout=60)
     sbc.run(apps_dir, out_dir, selection)

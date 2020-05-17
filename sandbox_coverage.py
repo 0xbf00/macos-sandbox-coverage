@@ -13,6 +13,8 @@ import sys
 import json
 import base64
 
+from typing import Any, Dict, List
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "maap"))
 
 from maap.misc.logger import create_logger
@@ -20,10 +22,19 @@ from maap.misc.logger import create_logger
 from sblogs.gather import gather_logs
 from sblogs.process import process_logs
 from sblogs.match import perform_matching
-from sbprofiles.normalise import normalise_profile
+from sbprofiles.normalise import normalise_profile, Platform
 from sbprofiles.generalise import generalise_results
 
 logger = create_logger('sandbox_coverage')
+
+
+def get_generic_profile() -> List[Dict[str, Any]]:
+    path = os.path.join(os.path.dirname(__file__), 'data', 'generic_profiles')
+    fn = os.path.join(path, '10.14.6-18G4032.json')
+    with open(fn, 'r') as fp:
+        profile = json.load(fp)
+    return profile
+
 
 def dump_state(state: dict, fp=sys.stdout):
     def serialise(input):
@@ -68,7 +79,7 @@ def main():
             'timeout': args.timeout
         },
         'sandbox_profiles': {
-            'general': json.load(open('data/generic_profile.json'))
+            'general': get_generic_profile()
         }
     }
 

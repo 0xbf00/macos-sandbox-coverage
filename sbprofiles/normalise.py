@@ -2,7 +2,10 @@ import json
 import tempfile
 import os
 import plistlib
+import re
+import subprocess
 
+from dataclasses import dataclass
 from typing import Dict, Tuple
 
 from maap.misc.plist import parse_resilient_bytes
@@ -12,19 +15,70 @@ from maap.extern.tools import call_sbpl
 logger = create_logger('sbprofiles.normalise')
 
 
+def version_from_str(version: str) -> int:
+    rx = re.compile(r'^(\d+)\.(\d+)\.(\d+)$')
+    m = rx.match(version)
+    assert m, f"Invalid version: {version}"
+    major = int(m.group(1))
+    minor = int(m.group(2))
+    patch = int(m.group(3))
+    assert 0 <= major and major < 255
+    assert 0 <= minor and minor < 255
+    assert 0 <= patch and patch < 255
+    return (major << 16) + (minor << 8) + patch
+
+
+@dataclass(frozen=True)
+class Platform:
+    product_name: str
+    product_version: str
+    build_version: str
+
+    @classmethod
+    def determine(cls) -> 'Platform':
+
+        def sw_vers(arg: str) -> str:
+            return subprocess.run(
+                ['sw_vers', arg],
+                check=True,
+                text=True,
+                capture_output=True
+            ).stdout.strip()
+
+        return cls(
+            product_name=sw_vers('-productName'),
+            product_version=sw_vers('-productVersion'),
+            build_version=sw_vers('-buildVersion'),
+        )
+
+    def is_newer_or_equal(self, version: str) -> bool:
+        other = version_from_str(version)
+        this = version_from_str(self.product_version)
+        return other <= this
+
+
 def normalise_container_metadata(metadata: dict) -> Tuple[dict, Dict[str, str]]:
     """Normalises existing container metadata and returns a normalised version
     back to the user.
 
     :param metadata Dictionary containing the original Container metadata."""
 
+    platform = Platform.determine()
+
+    if platform.is_newer_or_equal("10.15.4"):
+        parameters_key = 'Parameters'
+        redirectable_paths_key = 'RedirectablePaths'
+    else:
+        parameters_key = 'SandboxProfileDataValidationParametersKey'
+        redirectable_paths_key = 'SandboxProfileDataValidationRedirectablePathsKey'
+
     # Container metadata contains a number of important keys.
     # We only want to change the SandboxProfileDataValidationInfo entries
     relevant_entries = metadata['SandboxProfileDataValidationInfo']
 
-    # SandboxProfileDataValidationParametersKey contains general parameters for
-    # sandbox evaluation such as HOME_DIR, USER, app specific information, ...
-    sandbox_parameters = relevant_entries['SandboxProfileDataValidationParametersKey']
+    # General parameters for sandbox evaluation such as HOME_DIR, USER,
+    # app specific information, ...
+    sandbox_parameters = relevant_entries[parameters_key]
 
     # Grab home directory, we need that later.
     home_dir = sandbox_parameters['_HOME']
@@ -45,15 +99,15 @@ def normalise_container_metadata(metadata: dict) -> Tuple[dict, Dict[str, str]]:
         replacements[replacement] = sandbox_parameters[key]
         sandbox_parameters[key] = replacement
 
-    # SandboxProfileDataValidationRedirectablePathsKey contains redirectable paths that are part
-    # of the user's home directory. Patch these paths such that the HOME placeholder is used instead.
+    # Redirectable paths that are part of the user's home directory. Patch
+    # these paths such that the HOME placeholder is used instead.
     redirectable_paths = [x.replace(home_dir, sandbox_parameters['_HOME'])
                           for x
-                          in relevant_entries.get('SandboxProfileDataValidationRedirectablePathsKey', [])]
+                          in relevant_entries.get(redirectable_paths_key, [])]
 
     # Store the modified values back into the dictionary
-    relevant_entries['SandboxProfileDataValidationParametersKey'] = sandbox_parameters
-    relevant_entries['SandboxProfileDataValidationRedirectablePathsKey'] = redirectable_paths
+    relevant_entries[parameters_key] = sandbox_parameters
+    relevant_entries[redirectable_paths_key] = redirectable_paths
 
     metadata['SandboxProfileDataValidationInfo'] = relevant_entries
 
