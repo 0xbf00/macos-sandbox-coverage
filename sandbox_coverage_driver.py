@@ -92,6 +92,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
+        '-t', '--type',
+        choices=driver.Selection.choices(),
+        default=driver.Selection.ALL,
+        help="Only analyse applications specified by type. (default 'all')",
+    )
+    parser.add_argument(
         'applications',
         help="""
             Path to the directory, where applications are installed. This
@@ -104,14 +110,15 @@ def main() -> None:
     )
 
     args = parser.parse_args()
+    selection = driver.Selection(args.type)
 
     apps_dir = os.path.expanduser(args.applications)
     out_dir = os.path.expanduser(args.output)
 
     profile = json.load(open('data/generic_profile.json'))
 
-    driver = SandboxCoverageDriver(profile=profile, timeout=60)
-    driver.run(apps_dir, out_dir)
+    sbc = SandboxCoverageDriver(profile=profile, timeout=60)
+    sbc.run(apps_dir, out_dir, selection)
 
 
 if __name__ == '__main__':
