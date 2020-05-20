@@ -1,6 +1,9 @@
 # Binaries
 matching-core/build
 
+# Logs
+logs
+
 # Object files
 *.o
 *.dylib
