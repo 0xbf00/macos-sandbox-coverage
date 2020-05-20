@@ -9,6 +9,45 @@
 #include "misc.h"
 
 /**
+ * Try to check whether we are allowed to open a shared memory object. Since we
+ * do try to check sandbox rules after they have been collected by the original
+ * process, the original shared memory objects might have been closed already.
+ * Therefore we try to create them instead.
+ *
+ * If the file descriptor of the shared memory object is needed, you can pass a
+ * pointer fd_out and you need to take care of closing the file yourself. If
+ * that value is NULL, created files will be closed again automatically.
+ */
+int shm_open_or_create(const char *name, int oflags, int *fd_out) {
+    assert(!(oflags & O_CREAT));
+
+    int fd = shm_open(name, oflags);
+    if (fd_out != NULL) {
+        *fd_out = fd;
+    }
+    if (fd == -1) {
+        if (errno == EPERM) {
+            return 1;
+        }
+        if (errno == ENOENT) {
+            fd = shm_open(name, oflags | O_CREAT, 0777);
+            if (fd_out != NULL) {
+                *fd_out = fd;
+            }
+            if (fd == -1) {
+                PRINT_ERROR("Failed to create shared memory object");
+                return -1;
+            }
+        }
+    }
+    if (fd_out == NULL) {
+        close(fd);
+    }
+    return 0;
+}
+
+
+/**
  * Checks whether the sandbox allows to create a
  * posix shared memory variable with the specified name.
  */
@@ -53,17 +92,7 @@ int sandbox_check_shm_write_create(const char *name)
 
 int sandbox_check_shm_write_data(const char *name)
 {
-    int fd = shm_open(name, O_RDWR);
-    if (fd == -1) {
-        PRINT_ERROR("Cannot lookup named shared memory region");
-        if (errno == EPERM)
-            return 1;
-        else
-            return -1;
-    }
-
-    close(fd);
-    return 0;
+    return shm_open_or_create(name, O_RDWR, NULL);
 }
 
 int sandbox_check_shm_write_unlink(const char *name)
@@ -82,18 +111,7 @@ int sandbox_check_shm_write_unlink(const char *name)
 
 int sandbox_check_shm_read_data(const char *name)
 {
-    int fd = shm_open(name, O_RDONLY);
-
-    if (fd == -1) {
-        PRINT_ERROR("Cannot open shared memory");
-        if (errno == EPERM)
-            return 1;
-        else
-            return -1;
-    }
-
-    close(fd);
-    return 0;
+    return shm_open_or_create(name, O_RDONLY, NULL);
 }
 
 int sandbox_check_shm_read_metadata(const char *name)
@@ -105,13 +123,13 @@ int sandbox_check_shm_read_metadata(const char *name)
      * allows us to lookup existing descriptors.
      */
     struct stat metadata;
-    int fd = shm_open(name, O_RDONLY);
+    int fd = -1;
+    const int decision = shm_open_or_create(name, O_RDONLY, &fd);
 
     if (fd == -1) {
-        // Cannot open shared memory. Does the variable even exist?
-        PRINT_ERROR("Cannot open shared memory");
-        return -1;
+        return decision;
     }
+    assert(decision == 0);
 
     int success = fstat(fd, &metadata);
     if (success != 0) {
