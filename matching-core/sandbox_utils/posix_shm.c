@@ -37,8 +37,13 @@ enum decision shm_open_or_create(const char *name, int oflags, int *fd_out) {
                 *fd_out = fd;
             }
             if (fd == -1) {
+                /* If we cannot create a shared memory object, the profile might
+                 * prohibit creation but still allow opening with the given
+                 * `oflags`. We log the error but continue checking other rules,
+                 * and return that we are not able to determine the result.
+                 */
                 PRINT_ERROR("Failed to create shared memory object");
-                return DECISION_ERROR;
+                return DECISION_UNKNOWN;
             }
         }
     }
