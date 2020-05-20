@@ -58,14 +58,14 @@ static char *file_issue_extension_parse_class(const char *argument)
     return result;
 }
 
-int sandbox_check_file_issue_extension(const char *argument)
+enum decision sandbox_check_file_issue_extension(const char *argument)
 {
     char *target = file_issue_extension_parse_target(argument);
     char *class = file_issue_extension_parse_class(argument);
 
     if (target == NULL || class == NULL) {
         fprintf(stderr, "file-issue-extension parse error:\n    argument: %s\n    target: %s\n    class: %s\n", argument, target, class);
-        return -1;
+        return DECISION_ERROR;
     }
 
     const char *sandbox_class = NULL;
@@ -74,7 +74,7 @@ int sandbox_check_file_issue_extension(const char *argument)
     } else if (strcmp(class, "com.apple.app-sandbox.read") == 0) {
         sandbox_class = APP_SANDBOX_READ;
     } else {
-        return -1;
+        return DECISION_ERROR;
     }
 
     char *token = sandbox_extension_issue_file(sandbox_class, target, 0, 0);
@@ -83,5 +83,5 @@ int sandbox_check_file_issue_extension(const char *argument)
     free(target);
     free(class);
 
-    return success;
+    return success ? DECISION_ALLOW : DECISION_DENY;
 }

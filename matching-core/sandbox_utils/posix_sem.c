@@ -8,7 +8,7 @@
 /*
  POSIX Semaphore related functions
  */
-int sandbox_check_sem_create(const char *name)
+enum decision sandbox_check_sem_create(const char *name)
 {
     sem_t *existing_sem = sem_open(name, 0);
     if (existing_sem != SEM_FAILED) {
@@ -18,18 +18,18 @@ int sandbox_check_sem_create(const char *name)
         // one. If this fails, we return -1 to indicate we cannot
         // decide what the sandbox'd do.
         if (sem_unlink(name) != 0)
-            return -1;
+            return DECISION_ERROR;
     } else if (errno == EPERM) {
-        return -1;
+        return DECISION_ERROR;
     }
 
     sem_t *semaphore = sem_open(name, O_CREAT, 0777, 1);
     if (semaphore == SEM_FAILED) {
         PRINT_ERROR("Cannot create semaphore");
         if (errno == EPERM)
-            return 1;
+            return DECISION_DENY;
         else
-            return -1;
+            return DECISION_ERROR;
     }
 
     sem_close(semaphore);
@@ -37,37 +37,37 @@ int sandbox_check_sem_create(const char *name)
 }
 
 /* STUB: TODO */
-int sandbox_check_sem_open(const char *name)
+enum decision sandbox_check_sem_open(const char *name)
 {
-    return -1;
+    return DECISION_ERROR;
 }
 
-int sandbox_check_sem_post(const char *name)
+enum decision sandbox_check_sem_post(const char *name)
 {
     sem_t *semaphore = sem_open(name, 0);
     if (semaphore == SEM_FAILED) {
         PRINT_ERROR("Cannot open semaphore");
-        return -1;
+        return DECISION_ERROR;
     }
 
     int success = sem_post(semaphore);
-    return (success != 0);
+    return (success != 0) ? DECISION_DENY : DECISION_ALLOW;
 }
 
-int sandbox_check_sem_wait(const char *name)
+enum decision sandbox_check_sem_wait(const char *name)
 {
     sem_t *semaphore = sem_open(name, 0);
     if (semaphore == SEM_FAILED) {
         PRINT_ERROR("Cannot open semaphore");
-        return -1;
+        return DECISION_ERROR;
     }
 
     int success = sem_trywait(semaphore);
 
-    return (success != 0) && (errno != EAGAIN);
+    return ((success != 0) && (errno != EAGAIN)) ? DECISION_DENY : DECISION_ALLOW;
 }
 
-int sandbox_check_sem_unlink(const char *name)
+enum decision sandbox_check_sem_unlink(const char *name)
 {
     /*
         Note: this fails if the semaphore does not exist.
@@ -78,8 +78,8 @@ int sandbox_check_sem_unlink(const char *name)
     int success = sem_unlink(name);
     if (success == -1) {
         if (errno == EPERM)
-            return 1;
+            return DECISION_DENY;
     }
 
-    return (success == 0) ? 0 : -1;
+    return (success == 0) ? DECISION_ALLOW : DECISION_ERROR;
 }

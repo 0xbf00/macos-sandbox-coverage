@@ -7,36 +7,36 @@
  * Check whether the sandbox allows the
  * process-info-dirtycontrol operation
  */
-int sandbox_check_dirtycontrol(pid_t target)
+enum decision sandbox_check_dirtycontrol(pid_t target)
 {
     pid_t pid = target;
     uint32_t flags = 0;
 
     int res = proc_get_dirty(pid, &flags);
 
-    return (res != 0);
+    return (res != 0) ? DECISION_DENY : DECISION_ALLOW;
 }
 
 /**
  * Check whether the sandbox allows the
  * process-info-setcontrol operation
  */
-int sandbox_check_setcontrol(pid_t target /* unused */)
+enum decision sandbox_check_setcontrol(pid_t target /* unused */)
 {
     int res = proc_setpcontrol(PROC_SETPC_NONE);
 
-    return (res != 0);
+    return (res != 0) ? DECISION_DENY : DECISION_ALLOW;
 }
 
-int sandbox_check_listpids(pid_t target /* unused */)
+enum decision sandbox_check_listpids(pid_t target /* unused */)
 {
     int res = proc_listallpids(NULL, 0);
 
     // A return value of 0 indicates the operation was denied.
-    return (res == 0);
+    return (res == 0) ? DECISION_DENY : DECISION_ALLOW;
 }
 
-int sandbox_check_pidinfo(pid_t target)
+enum decision sandbox_check_pidinfo(pid_t target)
 {
     pid_t pid = target;
     struct proc_bsdinfo proc;
@@ -45,10 +45,10 @@ int sandbox_check_pidinfo(pid_t target)
                            &proc, PROC_PIDTBSDINFO_SIZE);
 
     // A return value of PROC_PIDTBSDINFO_SIZE indicates success
-    return (res != PROC_PIDTBSDINFO_SIZE);
+    return (res != PROC_PIDTBSDINFO_SIZE) ? DECISION_DENY : DECISION_ALLOW;
 }
 
-int sandbox_check_pidfdinfo(pid_t target)
+enum decision sandbox_check_pidfdinfo(pid_t target)
 {
     pid_t pid = target;
     struct vnode_fdinfowithpath vnode_info;
@@ -59,5 +59,5 @@ int sandbox_check_pidfdinfo(pid_t target)
         &vnode_info,
         PROC_PIDFDVNODEPATHINFO_SIZE);
 
-    return (res != PROC_PIDFDVNODEPATHINFO_SIZE);
+    return (res != PROC_PIDFDVNODEPATHINFO_SIZE) ? DECISION_DENY : DECISION_ALLOW;
 }

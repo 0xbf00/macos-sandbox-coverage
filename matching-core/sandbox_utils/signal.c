@@ -20,7 +20,7 @@ static int fork_allowed()
  * for instance.
  * Argument is ignored!
  */
-int sandbox_check_signal(const char *argument /* unused */)
+enum decision sandbox_check_signal(const char *argument /* unused */)
 {
     /*
     Practically the only sensible and used
@@ -34,7 +34,7 @@ int sandbox_check_signal(const char *argument /* unused */)
     */
     // If we fork but are not allowed to, we are killed
     if (!fork_allowed())
-        return -1;
+        return DECISION_ERROR;
 
     pid_t pid = fork();
 
@@ -45,8 +45,8 @@ int sandbox_check_signal(const char *argument /* unused */)
         // SIGKILL, because it also kills the child process,
         // while we're at it.
         int success = kill(pid, SIGKILL);
-        return (success != 0);
+        return (success != 0) ? DECISION_DENY : DECISION_ALLOW;
     }
 
-    return -1;
+    return DECISION_ERROR;
 }

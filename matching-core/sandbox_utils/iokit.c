@@ -180,12 +180,12 @@ static size_t io_services_for_user_class(const char *user_class, const char ***s
  * (return value 0), the result might not be correct, as a different service
  * could have been used originally, which would result in an inconsistent match.
  */
-int sandbox_check_iokit_open(const char *name)
+enum decision sandbox_check_iokit_open(const char *name)
 {
     const char **service_names = NULL;
     size_t service_count = io_services_for_user_class(name, &service_names);
     if (0 == service_count)
-        return -1;
+        return DECISION_ERROR;
 
     assert(service_names);
 
@@ -212,9 +212,9 @@ int sandbox_check_iokit_open(const char *name)
 
         IOServiceClose(port);
         free(service_names);
-        return 0;
+        return DECISION_ALLOW;
     }
 
     free(service_names);
-    return 1;
+    return DECISION_DENY;
 }

@@ -18,8 +18,8 @@ enum check_function_type {
     ARGUMENT_TYPE_STRING
 };
 
-typedef int (*pid_check_func)(const pid_t pid);
-typedef int (*str_check_func)(const char *arg);
+typedef enum decision (*pid_check_func)(const pid_t pid);
+typedef enum decision (*str_check_func)(const char *arg);
 
 typedef struct {
     const char *operation;
@@ -185,17 +185,9 @@ enum decision sandbox_check_perform(pid_t pid, const char *operation, int type, 
         if (strcmp(current->operation, operation) == 0) {
             // Found match
             if (current->function_type == ARGUMENT_TYPE_PID) {
-                const int rv = current->function.pid_func(pid);
-                if (!(rv == 0 || rv == 1)) {
-                    return DECISION_ERROR;
-                }
-                return rv == 0 ? DECISION_ALLOW : DECISION_DENY;
+                return current->function.pid_func(pid);
             } else {
-                const int rv = current->function.str_func(argument);
-                if (!(rv == 0 || rv == 1)) {
-                    return DECISION_ERROR;
-                }
-                return rv == 0 ? DECISION_ALLOW : DECISION_DENY;
+                return current->function.str_func(argument);
             }
         }
     }

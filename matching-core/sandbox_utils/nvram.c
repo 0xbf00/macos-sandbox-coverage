@@ -21,12 +21,12 @@ static io_registry_entry_t nvram_root()
     return nvram;
 }
 
-int sandbox_check_nvram_get(const char *variable_name)
+enum decision sandbox_check_nvram_get(const char *variable_name)
 {
     io_registry_entry_t root = nvram_root();
 
     if (!root)
-        return 1;
+        return DECISION_DENY;
 
     kern_return_t result;
     CFMutableDictionaryRef dict;
@@ -37,12 +37,12 @@ int sandbox_check_nvram_get(const char *variable_name)
     // allowed or not.
     result = IORegistryEntryCreateCFProperties(root, &dict, 0, 0);
     if (result != KERN_SUCCESS)
-        return 1;
+        return DECISION_DENY;
 
     CFStringRef variable = CFStringCreateWithCStringNoCopy(NULL,
         variable_name, kCFStringEncodingUTF8, kCFAllocatorNull);
     assert(variable);
 
     const void *value = CFDictionaryGetValue(dict, variable);
-    return (value == NULL);
+    return (value == NULL) ? DECISION_DENY : DECISION_ALLOW;
 }
